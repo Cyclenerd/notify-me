@@ -34,6 +34,8 @@ jobs:
       # Run test
       - name: Test 🧪
         run: |
+          export PTSV2_USERNAME="$PTSV2_USERNAME"
+          export PTSV2_PASSWORD="$PTSV2_PASSWORD"
           perl test.pl --msg="test" && \
           curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me/d/latest/text" | grep '{"message":"test"}' && \
           curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me/flush_all"
