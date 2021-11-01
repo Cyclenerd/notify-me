@@ -4,6 +4,12 @@ A collection of Perl scripts to notify you via MS Teams, sipgate SMS, Pushover, 
 
 Also available as [Docker image](https://hub.docker.com/r/cyclenerd/notify-me).
 
+## Tested
+
+* [![Ubuntu 18.04 LTS](https://github.com/Cyclenerd/notify-me/actions/workflows/ubuntu_1804.yml/badge.svg)](https://github.com/Cyclenerd/notify-me/actions/workflows/ubuntu_1804.yml)
+* [![Ubuntu 20.04 LTS](https://github.com/Cyclenerd/notify-me/actions/workflows/ubuntu_2004.yml/badge.svg)](https://github.com/Cyclenerd/notify-me/actions/workflows/ubuntu_2004.yml)
+* [![macOS 11](https://github.com/Cyclenerd/notify-me/actions/workflows/macos_11.yml/badge.svg)](https://github.com/Cyclenerd/notify-me/actions/workflows/macos_11.yml)
+* [![Latest Docker image](https://github.com/Cyclenerd/notify-me/actions/workflows/docker-latest.yml/badge.svg)](https://github.com/Cyclenerd/notify-me/actions/workflows/docker-latest.yml)
 
 ## Requirement
 
