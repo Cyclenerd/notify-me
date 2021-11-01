@@ -61,14 +61,14 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
       - name: Build CLI image 🧪
-        run: docker build -t cyclenerd/notify-me:test -f docker/cli/Dockerfile .
+        run: docker build -t notify-me -f docker/cli/Dockerfile .
       # Run test
       - name: Send test message 📤
         run: |
           docker run \
             --env PTSV2_USERNAME="${{ secrets.PTSV2_USERNAME }}" \
             --env PTSV2_PASSWORD="${{ secrets.PTSV2_PASSWORD }}" \
-            cyclenerd/notify-me:test \
+            notify-me \
             test.pl --msg="test"
       - name: Test message 📥
         run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me/d/latest/text" | grep '{"message":"test"}'
@@ -85,4 +85,6 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Push image to registry 🚢
-        run: docker push ghcr.io/cyclenerd/notify-me:test
+        run: |
+          docker tag notify-me ghcr.io/cyclenerd/notify-me:test
+          docker push ghcr.io/cyclenerd/notify-me:test
