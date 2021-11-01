@@ -13,8 +13,10 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "test"
-  test:
+  # This workflow contains multiple jobs
+  tests:
+    name: Tests
+
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
@@ -44,12 +46,20 @@ jobs:
       - name: test.pl Version 📏
         run: perl test.pl --version
 
+  docker:
+    name: Build & test Docker image
+    needs: [tests]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build CLI image 🧪
+        run: docker build -t cyclenerd/notify-me:latest -f docker/cli/Dockerfile .
       # Run test
       - name: Send test message 📤
-        run: |
-          export PTSV2_USERNAME="${{ secrets.PTSV2_USERNAME }}"
-          export PTSV2_PASSWORD="${{ secrets.PTSV2_PASSWORD }}"
-          perl test.pl --msg="test"
+        run: docker run \
+            --env PTSV2_USERNAME="${{ secrets.PTSV2_USERNAME }}" \
+            --env PTSV2_PASSWORD="${{ secrets.PTSV2_PASSWORD }}" \
+            cyclenerd/notify-me:latest \
+            test.pl --msg="test"
       - name: Test message 📥
         run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me/d/latest/text" | grep '{"message":"test"}'
 
