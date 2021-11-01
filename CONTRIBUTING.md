@@ -18,7 +18,7 @@ $ git commit -m "A brief summary of the commit
 
 Start reading the code and you'll get the hang of it. It is optimized for readability:
 
-* If you need a new Perl module, please adapt the docs and Docker images as well.
+* If you need a new Perl module, please adapt the docs, GitHub Actions and Docker images as well.
 * Space before the opening curly of a multi-line BLOCK.
 * No space before the semicolon.
 * Space around most operators.
