@@ -14,11 +14,11 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains multiple jobs
-  tests:
-    name: Tests
+  ubuntu-2004:
+    name: Test Ubuntu 20.04 LTS
 
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -33,24 +33,35 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
 
-      # Versions
-      - name: ms-teams.pl Version 📏
-        run: perl ms-teams.pl --version
+      # Test compilation
+      - name: Version 📏
+        run: cd t && bash test.sh
 
-      - name: pushover.pl Version 📏
-        run: perl pushover.pl --version
+  ubuntu-1804:
+    name: Test Ubuntu 18.04 LTS
+    runs-on: ubuntu-18.04
+    steps:
+      - name: Install dependencies 🔧
+        run: |
+          sudo apt-get install  \
+            libapp-options-perl \
+            libwww-perl         \
+            libjson-xs-perl
 
-      - name: sipgate-sms.pl Version 📏
-        run: perl sipgate-sms.pl --version
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
 
-      - name: test.pl Version 📏
-        run: perl test.pl --version
+      - name: Version 📏
+        run: cd t && bash test.sh
+
 
   docker:
     name: Build & test Docker image
-    needs: [tests]
+    needs: [ubuntu-2004]
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
       - name: Build CLI image 🧪
         run: docker build -t cyclenerd/notify-me:latest -f docker/cli/Dockerfile .
       # Run test
