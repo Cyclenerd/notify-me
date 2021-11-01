@@ -54,10 +54,8 @@ jobs:
       - name: Version 📏
         run: cd t && bash test.sh
 
-
   docker:
     name: Build & test Docker image
-    needs: [ubuntu-2004]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
@@ -66,7 +64,8 @@ jobs:
         run: docker build -t cyclenerd/notify-me:latest -f docker/cli/Dockerfile .
       # Run test
       - name: Send test message 📤
-        run: docker run \
+        run: |
+          docker run \
             --env PTSV2_USERNAME="${{ secrets.PTSV2_USERNAME }}" \
             --env PTSV2_PASSWORD="${{ secrets.PTSV2_PASSWORD }}" \
             cyclenerd/notify-me:latest \
