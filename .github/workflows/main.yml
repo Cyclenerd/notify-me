@@ -61,18 +61,28 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
       - name: Build CLI image 🧪
-        run: docker build -t cyclenerd/notify-me:latest -f docker/cli/Dockerfile .
+        run: docker build -t cyclenerd/notify-me:test -f docker/cli/Dockerfile .
       # Run test
       - name: Send test message 📤
         run: |
           docker run \
             --env PTSV2_USERNAME="${{ secrets.PTSV2_USERNAME }}" \
             --env PTSV2_PASSWORD="${{ secrets.PTSV2_PASSWORD }}" \
-            cyclenerd/notify-me:latest \
+            cyclenerd/notify-me:test \
             test.pl --msg="test"
       - name: Test message 📥
         run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me/d/latest/text" | grep '{"message":"test"}'
 
-        # Clean up
+      # Clean up
       - name: Clean up 🗑️
         run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me/flush_all"
+
+      # Store
+      - name: Login to GitHub Container registry 🏭
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push image to registry 🚢
+        run: docker push cyclenerd/notify-me:test
