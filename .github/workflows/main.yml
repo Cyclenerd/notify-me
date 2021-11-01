@@ -85,4 +85,4 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Push image to registry 🚢
-        run: docker push cyclenerd/notify-me:test
+        run: docker push ghcr.io/cyclenerd/notify-me:test
