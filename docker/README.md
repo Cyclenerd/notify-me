@@ -1,12 +1,35 @@
 
 # Docker
 
-Docker Hub: <https://hub.docker.com/r/cyclenerd/notify-me>
+The Docker images are based on the corresponding Ubuntu to [Debian](https://hub.docker.com/_/debian) version.
+
+You can find the Debian version on which your Ubuntu version is based in the file: `/etc/debian_version`
+
+| Ubuntu        | Debian      |
+|---------------|-------------|
+| 20.04 focal   | 11 bullseye |
+| 18.04 bionic  | 10 buster   |
+
+Currently the latest available [GitHub Actions virtual environments](https://github.com/actions/virtual-environments) is Ubuntu 20.04 (`ubuntu-latest` or `ubuntu-20.04`).
+The Docker images are therefore based on `debian:bullseye-slim`.
+
+This makes test easier.
+
+## Registries
+
+* Docker Hub: <https://hub.docker.com/r/cyclenerd/notify-me>
+* GitHub: <https://github.com/Cyclenerd/notify-me/pkgs/container/notify-me>
 
 ## Pull
 
+Docker Hub registry:
 ```shell
 docker pull cyclenerd/notify-me:latest
+```
+
+GitHub Container registry:
+```shell
+docker pull ghcr.io/cyclenerd/notify-me:latest
 ```
 
 ## Run
