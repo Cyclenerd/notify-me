@@ -29,7 +29,7 @@ use HTTP::Request::Common;
 use JSON::XS;
 use App::Options (
 	option => {
-		id    => { required => 1, description => "Your sipgate token id (example: token-FQ1V12) " },
+		id    => { required => 1, description => "Your sipgate token id (example: token-FQ1V12)" },
 		token => { required => 1, description => "Your sipgate token (example: e68ead46-a7db-46cd-8a1a-44aed1e4e372)", secure => 1 },
 		sms   => { required => 0, description => "Your sipgate SMS extension id (default: s0)", default => 's0' },
 		tel   => { required => 1, description => "Phone number of the SMS recipient (example: 49157...)", type => "integer" },
@@ -56,5 +56,5 @@ if ($response->is_success) {
 	print "OK: Message sent successfully.\n";
 } else {
 	# Error codes: https://github.com/sipgate-io/sipgateio-sendsms-php#http-errors
-	warn "ERROR: Message could not be sent! Status: '". $response->status_line ."'\n";
+	die "ERROR: Message could not be sent! Status: '". $response->status_line ."'\n";
 }
