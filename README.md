@@ -22,12 +22,10 @@ sudo apt install \
 	libjson-xs-perl
 ```
 
-Or install modules with cpan:
+Or install modules with cpanminus:
 ```shell
 cpan App::cpanminus
-cpanm App::Options
-cpanm LWP::UserAgent
-cpanm JSON::XS
+cpanm --installdeps .
 ```
 
 
