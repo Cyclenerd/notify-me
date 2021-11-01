@@ -59,9 +59,11 @@ jobs:
     name: Test macOS 11
     runs-on: macos-11
     steps:
-      - name: Install dependencies 🔧
+      - name: Install cpanminus 🔧
+        run: cpan App::cpanminus
+
+      - name: Install Perl dependencies 🔧
         run: |
-          cpan App::cpanminus
           cpanm App::Options
           cpanm LWP::UserAgent
           cpanm JSON::XS
