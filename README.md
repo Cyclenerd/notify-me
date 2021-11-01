@@ -2,7 +2,7 @@
 
 A collection of Perl scripts to notify you via MS Teams, sipgate SMS, Pushover, etc...
 
-Also available as Docker image.
+Also available as [Docker image](https://hub.docker.com/r/cyclenerd/notify-me).
 
 
 ## Requirement
