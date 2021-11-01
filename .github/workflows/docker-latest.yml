@@ -1,4 +1,4 @@
-name: Push latest Docker image
+name: "Push latest Docker image"
 
 on:
   push:
@@ -19,16 +19,16 @@ jobs:
 
       # Run test
       - name: "test.pl 📏"
-         run: docker run notify-me test.pl --version
+        run: docker run notify-me test.pl --version
 
       - name: "ms-teams.pl 📏"
-         run: docker run notify-me ms-teams.pl --version
+        run: docker run notify-me ms-teams.pl --version
 
       - name: "pushover.pl 📏"
-         run: docker run notify-me pushover.pl --version
+        run: docker run notify-me pushover.pl --version
 
       - name: "sipgate-sms.pl 📏"
-         run: docker run notify-me sipgate-sms.pl --version
+        run: docker run notify-me sipgate-sms.pl --version
 
       - name: Send test message 📤
         run: |
