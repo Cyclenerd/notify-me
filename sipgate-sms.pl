@@ -28,7 +28,6 @@ use LWP::UserAgent;
 use HTTP::Request::Common;
 use JSON::XS;
 use App::Options (
-	no_env_vars => 1,
 	option => {
 		id    => { required => 1, description => "Your sipgate token id (example: token-FQ1V12) " },
 		token => { required => 1, description => "Your sipgate token (example: e68ead46-a7db-46cd-8a1a-44aed1e4e372)", secure => 1 },
