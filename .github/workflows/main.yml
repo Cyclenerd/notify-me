@@ -45,12 +45,12 @@ jobs:
         run: perl test.pl --version
 
       # Run test
-      - name: Send message 🧪
+      - name: Send test message 📤
         run: |
           export PTSV2_USERNAME="${{ secrets.PTSV2_USERNAME }}"
           export PTSV2_PASSWORD="${{ secrets.PTSV2_PASSWORD }}"
           perl test.pl --msg="test"
-      - name: Test message 🧪
+      - name: Test message 📥
         run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me/d/latest/text" | grep '{"message":"test"}'
 
         # Clean up
