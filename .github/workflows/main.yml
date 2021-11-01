@@ -57,7 +57,7 @@ jobs:
   docker:
     name: Build & test Docker image
     runs-on: ubuntu-latest
-    needs: [ubuntu-2004, ubuntu-1804]
+    needs: [ubuntu-2004]
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
