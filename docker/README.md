@@ -57,7 +57,7 @@ docker run cyclenerd/notify-me:latest pushover.pl --help
 
 ## Environment Variables
 
-Pass [environment variables](../README.md#environment-variables) to container:
+Pass [environment variables](https://github.com/Cyclenerd/notify-me#environment-variables) to container:
 ```shell
 docker run --env APP_MSG=test cyclenerd/notify-me:latest pushover.pl --help
 ```
