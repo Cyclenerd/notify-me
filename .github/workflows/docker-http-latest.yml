@@ -37,7 +37,6 @@ jobs:
         with:
           context: .
           file: ./docker/http/Dockerfile
-          builder: ${{ steps.buildx.outputs.name }}
           push: true
           tags: ghcr.io/cyclenerd/notify-me:http-test
           cache-from: type=local,src=/tmp/.buildx-cache
