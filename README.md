@@ -2,7 +2,8 @@
 
 A collection of Perl scripts to notify you via Mailgun, MS Teams, sipgate SMS, Pushover, etc...
 
-Also available as [Docker image](https://hub.docker.com/r/cyclenerd/notify-me).
+Also available as [Docker image](https://github.com/Cyclenerd/notify-me/tree/master/docker) and
+[Docker image with HTTP API server](https://github.com/Cyclenerd/notify-me/tree/master/docker#http-image) for hosting in AWS, Azure or GCP.
 
 ## Services supported
 
