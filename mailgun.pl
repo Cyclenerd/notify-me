@@ -35,7 +35,7 @@ use App::Options (
 		domain  => { required => 1, description => "Your domain name" },
 		from    => { required => 1, description => "Sender of the message" },
 		to      => { required => 1, description => "Recipient of the message" },
-		subject => { required => 1, description => "Your subject", default => "Hello from mailgun.pl" },
+		title   => { required => 1, description => "Your subject", default => "Hello from mailgun.pl" },
 		msg     => { required => 1, description => "Your message" },
 	},
 );
@@ -46,7 +46,7 @@ my $ua = LWP::UserAgent->new;
 my $request = POST "$url", [
 	from    => $App::options{from},
 	to      => $App::options{to},
-	subject => $App::options{subject},
+	subject => $App::options{title},
 	text    => $App::options{msg},
 ];
 $request->authorization_basic("api", $App::options{key});
