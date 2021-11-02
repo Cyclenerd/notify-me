@@ -19,7 +19,7 @@ jobs:
 
       # Run test
       - name: Test versions 📏
-        run: cd t && bash docker.sh; cd ..
+        run: bash t/docker.sh
 
       - name: Send test message 📤
         run: |
