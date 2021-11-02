@@ -63,6 +63,7 @@ jobs:
 
   docker-test:
     name: Test Docker CLI image
+    needs: [docker]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
@@ -79,11 +80,10 @@ jobs:
         run: |
           docker pull ghcr.io/cyclenerd/notify-me:test
           docker tag ghcr.io/cyclenerd/notify-me:test notify-me
-
       # Run test
       - name: Test versions 📏
         run: bash t/docker.sh
-
+      # Message
       - name: Send test message 📤
         run: |
           docker run \
@@ -93,7 +93,6 @@ jobs:
             test.pl --msg="test"
       - name: Test message 📥
         run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me/d/latest/text" | grep '{"message":"test"}'
-
       # Clean up
       - name: Clean up 🗑️
         run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me/flush_all"
@@ -115,20 +114,18 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
-
+      # Run test
       - name: Test version 📏
         run: curl -i http://localhost:8080/?key=foo
-
+      # Message
       - name: Send test message 📤
         run: |
           curl -i \
             -H "Content-Type: application/json" \
             --data @http/NotifyMe-HTTP/t/test.json \
             http://localhost:8080/v1/test.pl?key=foo
-
       - name: Test message 📥
         run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-http/d/latest/text" | grep '{"message":"Test message"}'
-
       # Clean up
       - name: Clean up 🗑️
         run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-http/flush_all"
@@ -171,3 +168,42 @@ jobs:
         run: |
           docker tag ghcr.io/cyclenerd/notify-me:test cyclenerd/notify-me:latest
           docker push cyclenerd/notify-me:latest
+
+  github-registry-http-latest:
+    name: Push image to GitHub
+    runs-on: ubuntu-latest
+    needs: [docker-http-test]
+    steps:
+      - name: Login to GitHub Container registry 🏭
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Pull latest test image from GitHub container registry 📦
+        run: docker pull ghcr.io/cyclenerd/notify-me:http-test
+      - name: Quick test 📏
+        run: docker run ghcr.io/cyclenerd/notify-me:http-test perl /app/test.pl --version
+      - name: Push image to GitHub container registry as latest version 🚢
+        run: |
+          docker tag ghcr.io/cyclenerd/notify-me:http-test ghcr.io/cyclenerd/notify-me:http-latest
+          docker push ghcr.io/cyclenerd/notify-me:http-latest
+
+  docker-hub-http-latest:
+    name: Push image to Docker Hub
+    runs-on: ubuntu-latest
+    needs: [docker-http-test]
+    steps:
+      - name: Login to Docker Hub registry 🏭
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
+          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
+      - name: Pull latest test image from GitHub container registry 📦
+        run: docker pull ghcr.io/cyclenerd/notify-me:http-test
+      - name: Quick test 📏
+        run: docker run ghcr.io/cyclenerd/notify-me:http-test perl /app/test.pl --version
+      - name: Push image to Docker Hub registry as latest version 🚢
+        run: |
+          docker tag ghcr.io/cyclenerd/notify-me:http-test cyclenerd/notify-me:http-latest
+          docker push cyclenerd/notify-me:http-latest
