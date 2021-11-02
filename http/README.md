@@ -1,6 +1,7 @@
 # HTTP Wrapper
 
 HTTP wrapper for Perl command line scripts.
+Used in `cyclenerd/notify-me:http-latest` Docker image.
 
 Based on [Dancer](https://www.perldancer.org/) Perl web framework.
 
