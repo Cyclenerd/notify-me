@@ -18,6 +18,7 @@ $ git commit -m "A brief summary of the commit
 
 Start reading the code and you'll get the hang of it. It is optimized for readability:
 
+* Please name new Perl scripts according to the following pattern `a-z 0-9 _ -` (`[\w\d_-]+\.pl`).
 * If you need a new Perl module, please adapt the docs, cpanfile, GitHub Actions and Docker images as well.
 * Space before the opening curly of a multi-line BLOCK.
 * No space before the semicolon.
