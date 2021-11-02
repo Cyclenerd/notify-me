@@ -17,7 +17,7 @@ jobs:
       - name: Build HTTP image 🧪
         run: docker build -t notify-me-http -f docker/http/Dockerfile .
 
-      - name: Send test message 📤
+      - name: Start HTTP server ✨
         run: |
           docker run \
             -d \
@@ -25,15 +25,18 @@ jobs:
             --env PTSV2_URL="https://ptsv2.com/t/github-cyclenerd-notify-me-http/post" \
             --env PTSV2_USERNAME="${{ secrets.PTSV2_USERNAME }}" \
             --env PTSV2_PASSWORD="${{ secrets.PTSV2_PASSWORD }}" \
-            -p 127.0.0.1:8080:8080/tcp \
+            -p 8080:8080/tcp \
             notify-me-http
+
+      - name: Test version 📏
+        run: curl -i http://localhost:8080/?key=foo
 
       - name: Send test message 📤
         run: |
           curl -i \
             -H "Content-Type: application/json" \
             --data @http/NotifyMe-HTTP/t/test.json \
-            http://127.0.0.1:8080/v1/test.pl?key=foo
+            http://localhsot:8080/v1/test.pl?key=foo
 
       - name: Test message 📥
         run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-http/d/latest/text" | grep '{"message":"Test message"}'
