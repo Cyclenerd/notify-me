@@ -46,6 +46,11 @@ cpanm --installdeps .
 Send plain text message via Mailgun API:
 <https://documentation.mailgun.com/en/latest/api-sending.html#sending>
 
+Download script:
+```
+curl -O https://raw.githubusercontent.com/Cyclenerd/notify-me/master/mailgun.pl
+```
+
 Run:
 ```shell
 perl mailgun.pl \
@@ -86,6 +91,11 @@ IncomingWebhook/3fdd6767bae44ac58e5995547d66a4e4/ ↩
 f332c8d9-3397-4ac5-957b-b8e3fc465a8c
 ```
 
+Download script:
+```
+curl -O https://raw.githubusercontent.com/Cyclenerd/notify-me/master/ms-teams.pl
+```
+
 Run:
 ```shell
 perl ms-teams.pl \
@@ -110,6 +120,10 @@ More about this also in the [Configuration](#Configuration) section.
 Send message via Pushover API:
 <https://pushover.net/api>
 
+Download script:
+```
+curl -O https://raw.githubusercontent.com/Cyclenerd/notify-me/master/pushover.pl
+```
 
 Run:
 ```shell
@@ -137,6 +151,11 @@ Send an SMS via the sipgate REST API:
 
 1. Order the free feature "SMS senden": <https://app.sipgatebasic.de/feature-store/sms-senden>
 1. Get token id and token with 'sessions:sms:write' scope: <https://app.sipgate.com/personal-access-token>
+
+Download script:
+```
+curl -O https://raw.githubusercontent.com/Cyclenerd/notify-me/master/sipgate-sms.pl
+```
 
 ```shell
 perl sipgate-sms.pl \
