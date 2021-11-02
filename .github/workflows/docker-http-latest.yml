@@ -6,8 +6,8 @@ on:
 
 jobs:
 
-  docker:
-    name: Build & test Docker image
+  docker-http:
+    name: Build Docker image
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
@@ -16,34 +16,6 @@ jobs:
       # Build Docker image
       - name: Build HTTP image 🧪
         run: docker build -t notify-me-http -f docker/http/Dockerfile .
-
-      - name: Start HTTP server ✨
-        run: |
-          docker run \
-            -d \
-            --env API_KEY="foo" \
-            --env PTSV2_URL="https://ptsv2.com/t/github-cyclenerd-notify-me-http/post" \
-            --env PTSV2_USERNAME="${{ secrets.PTSV2_USERNAME }}" \
-            --env PTSV2_PASSWORD="${{ secrets.PTSV2_PASSWORD }}" \
-            -p 8080:8080/tcp \
-            notify-me-http
-
-      - name: Test version 📏
-        run: curl -i http://localhost:8080/?key=foo
-
-      - name: Send test message 📤
-        run: |
-          curl -i \
-            -H "Content-Type: application/json" \
-            --data @http/NotifyMe-HTTP/t/test.json \
-            http://localhsot:8080/v1/test.pl?key=foo
-
-      - name: Test message 📥
-        run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-http/d/latest/text" | grep '{"message":"Test message"}'
-
-      # Clean up
-      - name: Clean up 🗑️
-        run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-http/flush_all"
 
       # Store
       - name: Login to GitHub Container registry 🏭
@@ -56,3 +28,38 @@ jobs:
         run: |
           docker tag notify-me-http ghcr.io/cyclenerd/notify-me:http-test
           docker push ghcr.io/cyclenerd/notify-me:http-test
+
+  docker-http-test:
+    name: Test Docker image
+    needs: [docker-http]
+    runs-on: ubuntu-latest
+    services: # Define Docker containers to use for this job.
+      http-server: # Container ID for our notify-me container
+        image: ghcr.io/cyclenerd/notify-me:http-test # Image to pull from GitHub Container registry
+        env:
+          API_KEY: foo
+          PTSV2_URL: "https://ptsv2.com/t/github-cyclenerd-notify-me-http/post"
+          PTSV2_USERNAME: "${{ secrets.PTSV2_USERNAME }}"
+          PTSV2_PASSWORD: "${{ secrets.PTSV2_PASSWORD }}"
+        ports:
+          - 8080:8080 # TCP port to expose on Docker container and host environment 
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+
+      - name: Test version 📏
+        run: curl -i http://localhost:8080/?key=foo
+
+      - name: Send test message 📤
+        run: |
+          curl -i \
+            -H "Content-Type: application/json" \
+            --data @http/NotifyMe-HTTP/t/test.json \
+            http://localhost:8080/v1/test.pl?key=foo
+
+      - name: Test message 📥
+        run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-http/d/latest/text" | grep '{"message":"Test message"}'
+
+      # Clean up
+      - name: Clean up 🗑️
+        run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-http/flush_all"
