@@ -13,21 +13,32 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
 
-      # Build Docker image
-      - name: Build HTTP image 🧪
-        run: docker build -t notify-me-http -f docker/http/Dockerfile .
+      - name: Cache Docker layers 💾
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
 
-      # Store
       - name: Login to GitHub Container registry 🏭
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Push image to registry 🚢
-        run: |
-          docker tag notify-me-http ghcr.io/cyclenerd/notify-me:http-test
-          docker push ghcr.io/cyclenerd/notify-me:http-test
+
+      - name: Build and push HTTP image 🧪
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./docker/http/Dockerfile
+          builder: ${{ steps.buildx.outputs.name }}
+          push: true
+          tags: ghcr.io/cyclenerd/notify-me:http-test
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache
 
   docker-http-test:
     name: Test Docker image
