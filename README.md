@@ -4,6 +4,13 @@ A collection of Perl scripts to notify you via Mailgun, MS Teams, sipgate SMS, P
 
 Also available as [Docker image](https://hub.docker.com/r/cyclenerd/notify-me).
 
+## Services supported
+
+* 📧 [Mailgun](https://github.com/Cyclenerd/notify-me#mailgun--mailgunpl)
+* 👪 [Microsoft Teams](https://github.com/Cyclenerd/notify-me#microsoft-teams--ms-teamspl)
+* 🔔 [Pushover](https://github.com/Cyclenerd/notify-me#pushover--pushoverpl)
+* ☎️ [sipgate SMS](https://github.com/Cyclenerd/notify-me#sipgate-sms--sipgatepl)
+
 ## Tested
 
 * [![Ubuntu 18.04 LTS](https://github.com/Cyclenerd/notify-me/actions/workflows/ubuntu_1804.yml/badge.svg)](https://github.com/Cyclenerd/notify-me/actions/workflows/ubuntu_1804.yml)
