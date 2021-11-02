@@ -18,17 +18,8 @@ jobs:
         run: docker build -t notify-me -f docker/cli/Dockerfile .
 
       # Run test
-      - name: "test.pl 📏"
-        run: docker run notify-me test.pl --version
-
-      - name: "ms-teams.pl 📏"
-        run: docker run notify-me ms-teams.pl --version
-
-      - name: "pushover.pl 📏"
-        run: docker run notify-me pushover.pl --version
-
-      - name: "sipgate-sms.pl 📏"
-        run: docker run notify-me sipgate-sms.pl --version
+      - name: Test versions 📏
+        run: cd t && bash docker.sh; cd ..
 
       - name: Send test message 📤
         run: |
