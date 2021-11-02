@@ -1,0 +1,55 @@
+name: "Latest Docker HTTP image"
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+
+  docker:
+    name: Build & test Docker image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+
+      # Build Docker image
+      - name: Build HTTP image 🧪
+        run: docker build -t notify-me-http -f docker/http/Dockerfile .
+
+      - name: Send test message 📤
+        run: |
+          docker run \
+            -d \
+            --env API_KEY="foo" \
+            --env PTSV2_URL="https://ptsv2.com/t/github-cyclenerd-notify-me-http/post" \
+            --env PTSV2_USERNAME="${{ secrets.PTSV2_USERNAME }}" \
+            --env PTSV2_PASSWORD="${{ secrets.PTSV2_PASSWORD }}" \
+            -p 127.0.0.1:8080:8080/tcp \
+            notify-me-http
+
+      - name: Send test message 📤
+        run: |
+          curl -i \
+            -H "Content-Type: application/json" \
+            --data @http/NotifyMe-HTTP/t/test.json \
+            http://127.0.0.1:8080/v1/test.pl?key=foo
+
+      - name: Test message 📥
+        run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-http/d/latest/text" | grep '{"message":"Test message"}'
+
+      # Clean up
+      - name: Clean up 🗑️
+        run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-http/flush_all"
+
+      # Store
+      - name: Login to GitHub Container registry 🏭
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Push image to registry 🚢
+        run: |
+          docker tag notify-me-http ghcr.io/cyclenerd/notify-me:http-test
+          docker push ghcr.io/cyclenerd/notify-me:http-test
