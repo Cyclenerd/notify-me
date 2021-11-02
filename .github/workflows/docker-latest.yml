@@ -1,4 +1,4 @@
-name: "Latest Docker image"
+name: "Latest Docker images"
 
 on:
   push:
@@ -7,15 +7,78 @@ on:
 jobs:
 
   docker:
-    name: Build & test Docker image
+    name: Build Docker images
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
 
-      # Build Docker image
-      - name: Build CLI image 🧪
-        run: docker build -t notify-me -f docker/cli/Dockerfile .
+      - name: Set up Docker Buildx 🔧
+        uses: docker/setup-buildx-action@v1
+
+      - name: Cache Docker layers 💾
+        uses: actions/cache@v2
+        with:
+          path: /tmp/.buildx-cache
+          key: ${{ runner.os }}-buildx-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-buildx-
+
+      - name: Login to GitHub Container registry 🏭
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push CLI image 🧪
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./docker/cli/Dockerfile
+          push: true
+          tags: ghcr.io/cyclenerd/notify-me:test
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+
+      - name: Build and push HTTP image 🧪
+        id: docker_build_http
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./docker/http/Dockerfile
+          push: true
+          tags: ghcr.io/cyclenerd/notify-me:http-test
+          cache-from: type=local,src=/tmp/.buildx-cache
+          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+
+      # Temp fix
+      # https://github.com/docker/build-push-action/issues/252
+      # https://github.com/moby/buildkit/issues/1896
+      - name: Move cache
+        run: |
+          rm -rf /tmp/.buildx-cache
+          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
+
+  docker-test:
+    name: Test Docker CLI image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+
+      - name: Login to GitHub Container registry 🏭
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{ github.repository_owner }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Pull CLI test image 💿
+        run: |
+          docker pull ghcr.io/cyclenerd/notify-me:test
+          docker tag ghcr.io/cyclenerd/notify-me:test notify-me
 
       # Run test
       - name: Test versions 📏
@@ -35,22 +98,45 @@ jobs:
       - name: Clean up 🗑️
         run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me/flush_all"
 
-      # Store
-      - name: Login to GitHub Container registry 🏭
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Push image to registry 🚢
+  docker-http-test:
+    name: Test Docker HTTP image
+    needs: [docker]
+    runs-on: ubuntu-latest
+    services: # Define Docker containers to use for this job.
+      http-server: # Container ID for our notify-me container
+        image: ghcr.io/cyclenerd/notify-me:http-test # Image to pull from GitHub Container registry
+        env:
+          API_KEY: foo
+          PTSV2_URL: "https://ptsv2.com/t/github-cyclenerd-notify-me-http/post"
+          PTSV2_USERNAME: "${{ secrets.PTSV2_USERNAME }}"
+          PTSV2_PASSWORD: "${{ secrets.PTSV2_PASSWORD }}"
+        ports:
+          - 8080:8080 # TCP port to expose on Docker container and host environment 
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+
+      - name: Test version 📏
+        run: curl -i http://localhost:8080/?key=foo
+
+      - name: Send test message 📤
         run: |
-          docker tag notify-me ghcr.io/cyclenerd/notify-me:test
-          docker push ghcr.io/cyclenerd/notify-me:test
+          curl -i \
+            -H "Content-Type: application/json" \
+            --data @http/NotifyMe-HTTP/t/test.json \
+            http://localhost:8080/v1/test.pl?key=foo
+
+      - name: Test message 📥
+        run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-http/d/latest/text" | grep '{"message":"Test message"}'
+
+      # Clean up
+      - name: Clean up 🗑️
+        run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-http/flush_all"
 
   github-registry-latest:
     name: Push image to GitHub
     runs-on: ubuntu-latest
-    needs: [docker]
+    needs: [docker-test]
     steps:
       - name: Login to GitHub Container registry 🏭
         uses: docker/login-action@v1
@@ -70,7 +156,7 @@ jobs:
   docker-hub-latest:
     name: Push image to Docker Hub
     runs-on: ubuntu-latest
-    needs: [docker]
+    needs: [docker-test]
     steps:
       - name: Login to Docker Hub registry 🏭
         uses: docker/login-action@v1
