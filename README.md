@@ -53,7 +53,7 @@ perl mailgun.pl \
 	--domain="YOUR_DOMAIN_NAME" \
 	--from="SENDER_OF_THE_MESSAGE" \
 	--to="RECIPIENT_OF_THE_MESSAGE" \
-	--subject="YOUR_SUBJECT" \
+	--title="YOUR_SUBJECT" \
 	--msg="YOUR_MESSAGE"
 ```
 
@@ -64,7 +64,7 @@ key = YOUR_API_KEY
 domain = YOUR_DOMAIN_NAME
 from = SENDER_OF_THE_MESSAGE
 to = RECIPIENT_OF_THE_MESSAGE
-subject = YOUR_SUBJECT
+title = YOUR_SUBJECT
 msg = YOUR_MESSAGE
 ```
 
