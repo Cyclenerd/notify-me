@@ -1,6 +1,6 @@
 # Notify me
 
-A collection of Perl scripts to notify you via MS Teams, sipgate SMS, Pushover, etc...
+A collection of Perl scripts to notify you via Mailgun, MS Teams, sipgate SMS, Pushover, etc...
 
 Also available as [Docker image](https://hub.docker.com/r/cyclenerd/notify-me).
 
@@ -33,6 +33,35 @@ Or install modules with cpanminus:
 cpan App::cpanminus
 cpanm --installdeps .
 ```
+
+## Mailgun ( `mailgun.pl`)
+
+Send plain text message via Mailgun API:
+<https://documentation.mailgun.com/en/latest/api-sending.html#sending>
+
+Run:
+```shell
+perl mailgun.pl \
+	--key="YOUR_API_KEY" \
+	--domain="YOUR_DOMAIN_NAME" \
+	--from="SENDER_OF_THE_MESSAGE" \
+	--to="RECIPIENT_OF_THE_MESSAGE" \
+	--subject="YOUR_SUBJECT" \
+	--msg="YOUR_MESSAGE"
+```
+
+You can also create a `mailgun.conf` configuration file in the same directory as the `mailgun.pl` program with default values:
+
+```text
+key = YOUR_API_KEY
+domain = YOUR_DOMAIN_NAME
+from = SENDER_OF_THE_MESSAGE
+to = RECIPIENT_OF_THE_MESSAGE
+subject = YOUR_SUBJECT
+msg = YOUR_MESSAGE
+```
+
+More about this also in the [Configuration](#Configuration) section.
 
 
 ## Microsoft Teams ( `ms-teams.pl`)
