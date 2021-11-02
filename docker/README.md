@@ -64,8 +64,24 @@ docker run --env APP_MSG=test cyclenerd/notify-me:latest pushover.pl --help
 
 ## Build
 
+### CLI image
+
 ```text
 $  ls *.pl
 ms-teams.pl  pushover.pl  sipgate-sms.pl
 $ docker build -t cyclenerd/notify-me:latest -f docker/cli/Dockerfile .
+```
+
+### HTTP image
+
+Build:
+```text
+$  ls *.pl
+ms-teams.pl  pushover.pl  sipgate-sms.pl
+$ docker build -t cyclenerd/notify-me:http-latest -f docker/http/Dockerfile .
+```
+
+Run:
+```
+docker run --env API_KEY=foo -p 127.0.0.1:8080:8080/tcp cyclenerd/notify-me:http-latest
 ```

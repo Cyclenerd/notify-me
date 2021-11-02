@@ -12,11 +12,14 @@ cd NotifyMe-HTTP
 
 * Perl 5 (`perl`)
 * [Dancer2](https://metacpan.org/pod/Dancer2)
+* [Starman](https://metacpan.org/pod/Starman) (*high-performance Perl PSGI web server only for production*)
 
 Debian/Ubuntu:
 ```shell
 sudo apt update
 sudo apt install libdancer2-perl
+# Production only
+#sudo apt install starman
 ```
 
 Or install modules with cpanminus:
