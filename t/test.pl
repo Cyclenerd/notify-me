@@ -30,6 +30,7 @@ use HTTP::Request::Common;
 use JSON::XS;
 use App::Options (
 	option => {
+		url      => { required => 1, description => "URL", env => "PTSV2_URL", default => "https://ptsv2.com/t/github-cyclenerd-notify-me/post" },
 		username => { required => 1, description => "Username", env => "PTSV2_USERNAME", },
 		password => { required => 1, description => "Password", secure => 1, env => "PTSV2_PASSWORD" },
 		msg      => { required => 1, description => "Test" },
@@ -43,7 +44,7 @@ $json{message} = $App::options{msg};
 my $json_text = encode_json \%json;
 
 my $ua = LWP::UserAgent->new;
-my $request = POST 'https://ptsv2.com/t/github-cyclenerd-notify-me/post';
+my $request = POST $App::options{url};
 $request->authorization_basic($App::options{username}, $App::options{password});
 $request->header( 'Content-Type' => 'application/json', 'Content-Length' => length($json_text) );
 $request->content( $json_text );
