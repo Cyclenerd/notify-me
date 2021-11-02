@@ -11,9 +11,7 @@ cd NotifyMe-HTTP
 ## Requirement
 
 * Perl 5 (`perl`)
-* Perl modules
-	* [Dancer2](https://metacpan.org/pod/Dancer2)
-	* [Dancer2::Plugin::Auth::HTTP::Basic::DWIW](https://metacpan.org/pod/Dancer2::Plugin::Auth::HTTP::Basic::DWIW)
+* [Dancer2](https://metacpan.org/pod/Dancer2)
 
 Debian/Ubuntu:
 ```shell
