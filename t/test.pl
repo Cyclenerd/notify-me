@@ -20,7 +20,7 @@
 # Help: https://github.com/Cyclenerd/notify-me
 
 BEGIN {
-	$VERSION = "1.0";
+	$VERSION = "1.0.1";
 }
 use utf8;
 binmode(STDOUT, ":utf8");
@@ -30,10 +30,10 @@ use HTTP::Request::Common;
 use JSON::XS;
 use App::Options (
 	option => {
-		url      => { required => 1, description => "URL", env => "PTSV2_URL", default => "https://ptsv2.com/t/github-cyclenerd-notify-me/post" },
-		username => { required => 1, description => "Username", env => "PTSV2_USERNAME", default => "foo" },
-		password => { required => 1, description => "Password", secure => 1, env => "PTSV2_PASSWORD", default => "bar" },
-		msg      => { required => 1, description => "Test" },
+		url      => { required => 1, description => "PTSV2 URL for POST", env => "PTSV2_URL",      default => "https://ptsv2.com/t/github-cyclenerd-notify-me/post" },
+		username => { required => 1, description => "PTSV2 username",     env => "PTSV2_USERNAME", default => "foo" },
+		password => { required => 1, description => "PTSV2 password",     env => "PTSV2_PASSWORD", default => "bar", secure => 1 },
+		msg      => { required => 1, description => "Your message" },
 	},
 );
 

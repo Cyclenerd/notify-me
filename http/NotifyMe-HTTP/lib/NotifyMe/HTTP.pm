@@ -17,7 +17,7 @@
 package NotifyMe::HTTP;
 use Dancer2;
 
-our $VERSION = '1.0';
+our $VERSION = '1.0.1';
 
 # AUTHENTICATION
 hook before_request => sub {
