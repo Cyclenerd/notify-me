@@ -83,19 +83,21 @@ jobs:
       # Run test
       - name: Test versions 📏
         run: bash t/docker.sh
+      # Clean up
+      - name: Clean up 🗑️
+        run: curl -s "https://ptsv2.com/t/${{ secrets.PTSV2_NAME }}/flush_all"
       # Message
       - name: Send test message 📤
         run: |
           docker run \
-            --env PTSV2_USERNAME="${{ secrets.PTSV2_USERNAME }}" \
-            --env PTSV2_PASSWORD="${{ secrets.PTSV2_PASSWORD }}" \
+            --env PTSV2_URL="https://ptsv2.com/t/${{ secrets.PTSV2_NAME }}/post" \
             notify-me \
             test.pl --msg="test"
       - name: Test message 📥
-        run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me/d/latest/text" | grep '{"message":"test"}'
+        run: curl -s "https://ptsv2.com/t/${{ secrets.PTSV2_NAME }}/d/latest/text" | grep '{"message":"test"}'
       # Clean up
-      - name: Clean up 🗑️
-        run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me/flush_all"
+      - name: Clean up again 🗑️
+        run: curl -s "https://ptsv2.com/t/${{ secrets.PTSV2_NAME }}/flush_all"
 
   docker-http-test:
     name: Test Docker HTTP image
@@ -106,9 +108,7 @@ jobs:
         image: ghcr.io/cyclenerd/notify-me:http-test # Image to pull from GitHub Container registry
         env:
           API_KEY: foo
-          PTSV2_URL: "https://ptsv2.com/t/github-cyclenerd-notify-me-http/post"
-          PTSV2_USERNAME: "${{ secrets.PTSV2_USERNAME }}"
-          PTSV2_PASSWORD: "${{ secrets.PTSV2_PASSWORD }}"
+          PTSV2_URL: "https://ptsv2.com/t/${{ secrets.PTSV2_NAME }}-http/post"
         ports:
           - 8080:8080 # TCP port to expose on Docker container and host environment 
     steps:
@@ -117,6 +117,9 @@ jobs:
       # Run test
       - name: Test version 📏
         run: curl -i http://localhost:8080/?key=foo
+      # Clean up
+      - name: Clean up 🗑️
+        run: curl -s "https://ptsv2.com/t/${{ secrets.PTSV2_NAME }}-http/flush_all"
       # Message
       - name: Send test message 📤
         run: |
@@ -125,10 +128,10 @@ jobs:
             --data @http/NotifyMe-HTTP/t/test.json \
             http://localhost:8080/v1/test.pl?key=foo
       - name: Test message 📥
-        run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-http/d/latest/text" | grep '{"message":"Test message"}'
+        run: curl -s "https://ptsv2.com/t/${{ secrets.PTSV2_NAME }}-http/d/latest/text" | grep '{"message":"Test message"}'
       # Clean up
-      - name: Clean up 🗑️
-        run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-http/flush_all"
+      - name: Clean up again 🗑️
+        run: curl -s "https://ptsv2.com/t/${{ secrets.PTSV2_NAME }}-http/flush_all"
 
   github-registry-latest:
     name: Push image to GitHub

@@ -31,8 +31,8 @@ use JSON::XS;
 use App::Options (
 	option => {
 		url      => { required => 1, description => "URL", env => "PTSV2_URL", default => "https://ptsv2.com/t/github-cyclenerd-notify-me/post" },
-		username => { required => 1, description => "Username", env => "PTSV2_USERNAME", },
-		password => { required => 1, description => "Password", secure => 1, env => "PTSV2_PASSWORD" },
+		username => { required => 1, description => "Username", env => "PTSV2_USERNAME", default => "foo" },
+		password => { required => 1, description => "Password", secure => 1, env => "PTSV2_PASSWORD", default => "bar" },
 		msg      => { required => 1, description => "Test" },
 	},
 );
