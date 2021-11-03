@@ -55,6 +55,11 @@ grep "Test title"   < /tmp/notiy-me-tmp-test
 grep "Test message" < /tmp/notiy-me-tmp-test
 ```
 
+JQ:
+```
+curl -H "Content-Type: application/json" --data @t/test.json http://localhost:8080/v1/tmp.pl?key=$API_KEY | jq
+```
+
 Test Google Monitoring JSON message:
 ```
 curl -i \
