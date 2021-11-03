@@ -3,7 +3,9 @@
 A collection of Perl scripts to notify you via Mailgun, MS Teams, sipgate SMS, Pushover, etc...
 
 Also available as [Docker image](https://github.com/Cyclenerd/notify-me/tree/master/docker) and
-[Docker image with HTTP API server](https://github.com/Cyclenerd/notify-me/tree/master/docker#http-image) for hosting in AWS, Azure or GCP.
+[Docker image with HTTP API server](https://github.com/Cyclenerd/notify-me/tree/master/docker#http-image) for hosting using AWS, Azure or [Google Cloud Platform](https://github.com/Cyclenerd/notify-me/tree/master/gcp_cloud_run).
+
+[![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://github.com/Cyclenerd/notify-me/tree/master/gcp_cloud_run)
 
 ## Services supported
 

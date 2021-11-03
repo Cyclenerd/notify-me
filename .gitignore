@@ -1,4 +1,5 @@
 *.conf
+my_config
 
 !Build/
 .last_cover_stats
