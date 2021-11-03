@@ -18,7 +18,7 @@ package NotifyMe::HTTP;
 use Dancer2;
 use Digest::SHA qw(sha256_hex);
 
-our $VERSION = '1.1.1';
+our $VERSION = '1.2.0';
 
 # AUTHENTICATION
 hook before_request => sub {
@@ -41,6 +41,14 @@ get '/' => sub {
 # For PTSV2 test
 get '/ptsv2' => sub {
 	send_as JSON => { url => $ENV{'PTSV2_URL'} };
+};
+
+# Uptime
+get '/uptime' => sub {
+	send_as JSON => {
+		since  => qx(uptime -s),
+		pretty => qx(uptime -p)
+	};
 };
 
 # JSON message
