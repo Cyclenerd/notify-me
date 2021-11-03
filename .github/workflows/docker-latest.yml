@@ -118,7 +118,9 @@ jobs:
         uses: actions/checkout@v2
       # Run test
       - name: Test version 📏
-        run: curl -i http://localhost:8080/?key=foo
+        run: |
+          curl -i http://localhost:8080/?key=foo
+          curl -i http://localhost:8080/ptsv2?key=foo
       # Create PTSV2
       - name: Create PTSV2 toilet 🚽
         run: |

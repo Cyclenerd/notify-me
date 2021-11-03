@@ -18,7 +18,7 @@ package NotifyMe::HTTP;
 use Dancer2;
 use Digest::SHA qw(sha256_hex);
 
-our $VERSION = '1.1.0';
+our $VERSION = '1.1.1';
 
 # AUTHENTICATION
 hook before_request => sub {
@@ -38,6 +38,11 @@ get '/' => sub {
 	send_as JSON => { version => "$VERSION" };
 };
 
+# For PTSV2 test
+get '/ptsv2' => sub {
+	send_as JSON => { url => $ENV{'PTSV2_URL'} };
+};
+
 # JSON message
 post qr{/v1/([\w\d_-]+\.pl)} => sub {
 	my ($script) = splat;
@@ -47,7 +52,7 @@ post qr{/v1/([\w\d_-]+\.pl)} => sub {
 		debug( request->body );
 		# Defaults
 		my $title = "";
-		my $msg = "msg missing";
+		my $msg   = "message missing";
 		# Read JSON
 		my $json = decode_json( request->body );
 		if ($json) {
@@ -69,7 +74,7 @@ post qr{/v1/([\w\d_-]+\.pl)} => sub {
 			# Random filename for output
 			my $digest   = sha256_hex( time()+rand(10000) );
 			my $filename = '/tmp/notify-me-'.$digest.'.txt';
-			# Run command line Per script and redirect output
+			# Run command line Perl script and redirect output
 			my $perl_script = qx(perl \"$script\" --msg=\"$msg\" --title=\"$title\" > $filename 2>&1);
 			# Read output (STDOUT and STDERR)
 			open(FH, '<', $filename);
