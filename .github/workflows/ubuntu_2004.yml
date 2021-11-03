@@ -30,7 +30,7 @@ jobs:
           curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-ubuntu2004-$GITHUB_SHA/flush_all"
       # Message
       - name: Send test message 📤
-        run: perl t/test.pl --msg="Ubuntu 20.04 LTS"
+        run: perl t/test.pl --msg="Ubuntu 20.04 LTS" --url="https://ptsv2.com/t/github-cyclenerd-notify-me-ubuntu2004-$GITHUB_SHA/post"
       - name: Test message 📥
         run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-ubuntu2004-$GITHUB_SHA/d/latest/text" | grep '{"message":"Ubuntu 20.04 LTS"}'
       # Clean up
