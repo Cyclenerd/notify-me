@@ -16,8 +16,9 @@
 
 package NotifyMe::HTTP;
 use Dancer2;
+use Digest::SHA qw(sha256_hex);
 
-our $VERSION = '1.0.2';
+our $VERSION = '1.1.0';
 
 # AUTHENTICATION
 hook before_request => sub {
@@ -65,14 +66,24 @@ post qr{/v1/([\w\d_-]+\.pl)} => sub {
 				$title = "$icon [$state] $policy_name : $resource_name";
 				$msg  = "$summary";
 			}
-			# Send via script
-			my $script_output = qx(perl \"$script\" --msg=\"$msg\" --title=\"$title\");
-			if ( $script_output =~ /OK/ ) {
+			# Random filename for output
+			my $digest   = sha256_hex( time()+rand(10000) );
+			my $filename = '/tmp/notify-me-'.$digest.'.txt';
+			# Run command line Per script and redirect output
+			my $perl_script = qx(perl \"$script\" --msg=\"$msg\" --title=\"$title\" > $filename 2>&1);
+			# Read output (STDOUT and STDERR)
+			open(FH, '<', $filename);
+			my $file_content = '';
+			while (<FH>) {
+				$file_content .= $_;
+			}
+			# Check output
+			if ( $file_content =~ /OK/ ) {
 				response->status(200);
 				send_as JSON => { ok => "Message sent successfully" };
 			} else {
 				response->status(502);
-				send_as JSON => { error => "Message could not be sent!", output => $script_output };
+				send_as JSON => { error => "Message could not be sent!", output => $file_content };
 			}
 		} else {
 			response->status(406);
