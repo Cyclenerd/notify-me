@@ -17,7 +17,7 @@
 package NotifyMe::HTTP;
 use Dancer2;
 
-our $VERSION = '1.0.1';
+our $VERSION = '1.0.2';
 
 # AUTHENTICATION
 hook before_request => sub {
@@ -66,12 +66,13 @@ post qr{/v1/([\w\d_-]+\.pl)} => sub {
 				$msg  = "$summary";
 			}
 			# Send via script
-			if ( qx(perl \"$script\" --msg=\"$msg\" --title=\"$title\") ) {
+			my $script_output = qx(perl \"$script\" --msg=\"$msg\" --title=\"$title\");
+			if ( $script_output =~ /OK/ ) {
 				response->status(200);
 				send_as JSON => { ok => "Message sent successfully" };
 			} else {
 				response->status(502);
-				send_as JSON => { error => "Message could not be sent!" };
+				send_as JSON => { error => "Message could not be sent!", output => $script_output };
 			}
 		} else {
 			response->status(406);
