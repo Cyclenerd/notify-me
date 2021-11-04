@@ -55,10 +55,29 @@ If you don't have it installed, the script will try to install it under `/usr/lo
 
 **Deploy container to Cloud Run service and test HTTP API:**
 ```
-bash 03_deploy_cloud_run-test.sh
+bash 03_deploy_cloud_run.sh
 ```
 
 💡 You can always repeat this step to update the Cloud Run container.
+
+#### Microsoft Teams
+
+**Deploy another Cloud Run service for MS Teams `ms-teams.pl`:**
+```shell
+# MS Teams webhook url
+export APP_URL="https://outlook.office.com/webhook/<group>@<tenantID>/IncomingWebhook/<chars>/<guid>"
+# Other Cloud Run service name
+export MY_GCP_RUN_SERVICE_NAME="teams"
+bash 03_deploy_cloud_run.sh
+```
+
+**Test:**
+```shell
+curl -i \
+	-H "Content-Type: application/json" \
+	--data @../http/NotifyMe-HTTP/t/google-test.json \
+	https://<Cloud Run service URL>/v1/ms-teams.pl?key=$API_KEY
+```
 
 ### Done
 

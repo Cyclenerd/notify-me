@@ -44,7 +44,25 @@ fi
 
 # Do not change
 MY_GCP_RUN_IMAGE="$MY_GCP_REGION-docker.pkg.dev/$MY_GCP_PROJECT/$MY_GCP_REPOSITORY_NAME/notify-me:http-latest"
-PTSV2_URL="https://ptsv2.com/t/cloud-run-notify-me-$MY_GCP_REGION-$MY_GCP_RUN_SERVICE_NAME/post"
+PTSV2_URL="https://ptsv2.com/t/cloud-run-notify-me-$MY_GCP_PROJECT-$MY_GCP_RUN_SERVICE_NAME/post"
+# API key
+MY_CGP_RUN_ENV_VARS="API_KEY=$API_KEY"
+# test.pl
+MY_CGP_RUN_ENV_VARS+=",PTSV2_URL=$PTSV2_URL"
+# mailgun.pl
+MY_CGP_RUN_ENV_VARS+=",APP_KEY=$APP_KEY"
+MY_CGP_RUN_ENV_VARS+=",APP_DOMAIN=$APP_DOMAIN"
+MY_CGP_RUN_ENV_VARS+=",APP_FROM=$APP_FROM"
+MY_CGP_RUN_ENV_VARS+=",APP_TO=$APP_TO"
+# ms-teams.pl
+MY_CGP_RUN_ENV_VARS+=",APP_URL=$APP_URL"
+# pushover.pl
+MY_CGP_RUN_ENV_VARS+=",APP_USER=$APP_USER"
+MY_CGP_RUN_ENV_VARS+=",APP_TOKEN=$APP_TOKEN"
+# sipgate-sms.pl
+MY_CGP_RUN_ENV_VARS+=",APP_ID=$APP_ID"
+#MY_CGP_RUN_ENV_VARS+=",APP_TOKEN=$APP_TOKEN" # already from pushover.pl
+MY_CGP_RUN_ENV_VARS+=",APP_TEL=$APP_TEL"
 
 echo
 echo "Deploy container to Cloud Run service"
@@ -72,7 +90,7 @@ gcloud run deploy "$MY_GCP_RUN_SERVICE_NAME" \
 --service-account="$MY_GCP_SA_ID"            \
 --min-instances="$MY_GCP_RUN_MIN_INSTANCES"  \
 --max-instances="$MY_GCP_RUN_MAX_INSTANCES"  \
---set-env-vars="API_KEY=$API_KEY,PTSV2_URL=$PTSV2_URL" \
+--set-env-vars="$MY_CGP_RUN_ENV_VARS"        \
 --project="$MY_GCP_PROJECT"
 echo
 
@@ -104,8 +122,8 @@ echo
 echo
 echo "Create PTSV2 toilet for test"
 echo "----------------------------"
-curl -s "https://ptsv2.com/t/cloud-run-notify-me-$MY_GCP_REGION-$MY_GCP_RUN_SERVICE_NAME" >> /dev/null
-curl -s "https://ptsv2.com/t/cloud-run-notify-me-$MY_GCP_REGION-$MY_GCP_RUN_SERVICE_NAME/flush_all"
+curl -s "https://ptsv2.com/t/cloud-run-notify-me-$MY_GCP_PROJECT-$MY_GCP_RUN_SERVICE_NAME" >> /dev/null
+curl -s "https://ptsv2.com/t/cloud-run-notify-me-$MY_GCP_PROJECT-$MY_GCP_RUN_SERVICE_NAME/flush_all"
 echo
 
 echo
@@ -120,7 +138,7 @@ echo
 echo
 echo "Test message"
 echo "------------"
-if curl -s "https://ptsv2.com/t/cloud-run-notify-me-$MY_GCP_REGION-$MY_GCP_RUN_SERVICE_NAME/d/latest/text" | grep '{"message":"Test message"}'; then
+if curl -s "https://ptsv2.com/t/cloud-run-notify-me-$MY_GCP_PROJECT-$MY_GCP_RUN_SERVICE_NAME/d/latest/text" | grep '{"message":"Test message"}'; then
 	echo "OK"
 else
 	echo
@@ -134,7 +152,7 @@ echo
 echo
 echo "Clean up"
 echo "--------"
-curl -s "https://ptsv2.com/t/cloud-run-notify-me-$MY_GCP_REGION-$MY_GCP_RUN_SERVICE_NAME/flush_all"
+curl -s "https://ptsv2.com/t/cloud-run-notify-me-$MY_GCP_PROJECT-$MY_GCP_RUN_SERVICE_NAME/flush_all"
 echo
 
 echo

@@ -1,23 +1,23 @@
 #!/usr/bin/env bash
 
-MY_DOCKER_SOURCE_IMAGE="ghcr.io/cyclenerd/notify-me:http-latest"
-MY_GCP_REPOSITORY_NAME="docker"
-MY_GCP_REGION="europe-west4"
-MY_GCP_PROJECT="notify-me"
+MY_DOCKER_SOURCE_IMAGE=${MY_DOCKER_SOURCE_IMAGE:-"ghcr.io/cyclenerd/notify-me:http-latest"}
+MY_GCP_REPOSITORY_NAME=${MY_GCP_REPOSITORY_NAME:-"docker"}
+MY_GCP_REGION=${MY_GCP_REGION:-"europe-west4"}
+MY_GCP_PROJECT=${MY_GCP_PROJECT:-"notify-me"}
 # Cloud Run Service name must be less than 63 characters
-MY_GCP_RUN_SERVICE_NAME="run-test"
-MY_GCP_RUN_CPU="1"
-MY_GCP_RUN_MEMORY="512Mi"
+MY_GCP_RUN_SERVICE_NAME=${MY_GCP_RUN_SERVICE_NAME:-"run-test"}
+MY_GCP_RUN_CPU=${MY_GCP_RUN_CPU:-"1"}
+MY_GCP_RUN_MEMORY=${MY_GCP_RUN_MEMORY:-"512Mi"}
 # Maximum number of concurrent requests allowed per container instance
 #   https://cloud.google.com/run/docs/about-concurrency
-MY_GCP_RUN_CONCURRENCY="80"
+MY_GCP_RUN_CONCURRENCY=${MY_GCP_RUN_CONCURRENCY:-"80"}
 # Set to 1 to reduce cold starts:
 #   https://cloud.google.com/run/docs/configuring/min-instances
-MY_GCP_RUN_MIN_INSTANCES="0"
-MY_GCP_RUN_MAX_INSTANCES="10"
+MY_GCP_RUN_MIN_INSTANCES=${MY_GCP_RUN_MIN_INSTANCES:-"0"}
+MY_GCP_RUN_MAX_INSTANCES=${MY_GCP_RUN_MAX_INSTANCES:-"10"}
 # Service account name
-MY_GCP_SA_NAME="sa-cloud-run"
-MY_GCP_SA_DISPLAY_NAME="Cloud Run container"
-MY_GCP_SA_DESCRIPTION="Service account for Google Cloud Run container"
+MY_GCP_SA_NAME=${MY_GCP_SA_NAME:-"sa-cloud-run"}
+MY_GCP_SA_DISPLAY_NAME=${MY_GCP_SA_DISPLAY_NAME:-"Cloud Run container"}
+MY_GCP_SA_DESCRIPTION=${MY_GCP_SA_DESCRIPTION:-"Service account for Google Cloud Run container"}
 # HTTP API key
 API_KEY="$(echo $RANDOM | md5sum | head -c 20)"
