@@ -20,11 +20,13 @@
 
 
 BEGIN {
-	$VERSION = "1.0";
+	$VERSION = "1.0.1";
 }
+
 use utf8;
-binmode(STDOUT, ":utf8");
+binmode(STDOUT, ':encoding(utf8)');
 use strict;
+use Encode;
 use LWP::UserAgent;
 use App::Options (
 	option => {
@@ -34,11 +36,15 @@ use App::Options (
 	},
 );
 
+my $user  = $App::options{user};
+my $token = $App::options{token};
+my $msg   = decode('UTF-8', $App::options{msg});
+
 my $response = LWP::UserAgent->new()->post(
 	"https://api.pushover.net/1/messages.json", [
-	"token"   => $App::options{token},
-	"user"    => $App::options{user},
-	"message" => $App::options{msg},
+	"token"   => $token,
+	"user"    => $user,
+	"message" => $msg,
 ]);
 
 if ($response->is_success) {

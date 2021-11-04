@@ -21,11 +21,13 @@
 
 
 BEGIN {
-	$VERSION = "1.0";
+	$VERSION = "1.0.1";
 }
+
 use utf8;
-binmode(STDOUT, ":utf8");
+binmode(STDOUT, ':encoding(utf8)');
 use strict;
+use Encode;
 use LWP::UserAgent;
 # HTTP::Request::Common is a dependency of LWP::UserAgent
 use HTTP::Request::Common;
@@ -40,16 +42,22 @@ use App::Options (
 	},
 );
 
-my $url = "https://api.mailgun.net/v3/".$App::options{domain}."/messages";
+my $key    = $App::options{key};
+my $domain = $App::options{domain};
+my $from   = $App::options{from};
+my $to     = $App::options{to};
+my $title  = decode('UTF-8', $App::options{title});
+my $msg    = decode('UTF-8', $App::options{msg});
+my $url   = "https://api.mailgun.net/v3/".$domain."/messages";
 
 my $ua = LWP::UserAgent->new;
 my $request = POST "$url", [
-	from    => $App::options{from},
-	to      => $App::options{to},
-	subject => $App::options{title},
-	text    => $App::options{msg},
+	from    => $from,
+	to      => $to,
+	subject => $title,
+	text    => $msg,
 ];
-$request->authorization_basic("api", $App::options{key});
+$request->authorization_basic("api", $key);
 my $response = $ua->request($request);
 
 if ($response->is_success) {

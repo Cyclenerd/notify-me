@@ -19,11 +19,13 @@
 # Help: https://github.com/Cyclenerd/notify-me
 
 BEGIN {
-	$VERSION = "1.0";
+	$VERSION = "1.0.1";
 }
+
 use utf8;
-binmode(STDOUT, ":utf8");
+binmode(STDOUT, ':encoding(utf8)');
 use strict;
+use Encode;
 use LWP::UserAgent;
 use HTTP::Request::Common;
 use JSON::XS;
@@ -37,17 +39,23 @@ use App::Options (
 	},
 );
 
+my $id    = $App::options{id};
+my $token = $App::options{token};
+my $sms   = $App::options{sms};
+my $tel   = $App::options{tel};
+my $msg   = decode('UTF-8', $App::options{msg});
+
 # Create JSON for content body
 my %json;
-$json{smsId}     = $App::options{sms};
-$json{recipient} = $App::options{tel};
-$json{message}   = $App::options{msg};
+$json{smsId}     = $sms;
+$json{recipient} = $tel;
+$json{message}   = $msg;
 # Convert Perl hash to JSON
 my $json_text = encode_json \%json;
 
 my $ua = LWP::UserAgent->new;
 my $request = POST 'https://api.sipgate.com/v2/sessions/sms';
-$request->authorization_basic($App::options{id}, $App::options{token});
+$request->authorization_basic($id, $token);
 $request->header( 'Content-Type' => 'application/json', 'Content-Length' => length($json_text) );
 $request->content( $json_text );
 my $response = $ua->request($request);
