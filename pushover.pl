@@ -18,7 +18,6 @@
 #
 # Help: https://github.com/Cyclenerd/notify-me
 
-
 BEGIN {
 	$VERSION = "1.0.1";
 }
@@ -31,7 +30,7 @@ use LWP::UserAgent;
 use App::Options (
 	option => {
 		user  => { required => 1, description => "The user/group key (not e-mail address) of your user" }, # viewable when logged into our dashboard
-		token => { required => 1, description => "Your application's API token ", secure => 1 },
+		token => { required => 1, description => "Your application's API token", secure => 1 },
 		msg   => { required => 1, description => "Your message" },
 	},
 );
