@@ -18,7 +18,7 @@ package NotifyMe::HTTP;
 use Dancer2;
 use Digest::SHA qw(sha256_hex);
 
-our $VERSION = '1.2.2';
+our $VERSION = '1.2.3';
 
 # AUTHENTICATION
 hook before_request => sub {
@@ -68,8 +68,7 @@ post qr{/v1/([\w\d_-]+\.pl)} => sub {
 				my $summary        = $json->{incident}->{summary}        || 'summary missing';
 				my $icon = $state eq 'open' ? '🔥' : '✅';
 				# Message
-				$title = "$icon [$state] $policy_name : $resource_name";
-				$msg  = "$summary";
+				$msg = "$icon [$state] $policy_name » $resource_name : $summary";
 			}
 			# Random filename for output
 			my $digest   = sha256_hex( time()+rand(10000) );
