@@ -2,6 +2,11 @@
 
 Deploy the [HTTP API](https://github.com/Cyclenerd/notify-me/tree/master/http) as highly scalable containerized applications on a fully managed serverless platform.
 
+You can use the service to get notified about Google Cloud Platform Monitoring alerts.
+Add the HTTP API URL as a webhook endpoint for this task.
+
+![Screenshot: Google Cloud Monitoring webhooks](img/gcp-monitoring-webhook.png)
+
 ## Setup
 
 You need a Bash shell and the [Google Cloud SDK](https://cloud.google.com/sdk/docs/install).
@@ -68,6 +73,26 @@ bash 03_deploy_cloud_run.sh
 export APP_URL="https://outlook.office.com/webhook/<group>@<tenantID>/IncomingWebhook/<chars>/<guid>"
 # Other Cloud Run service name
 export MY_GCP_RUN_SERVICE_NAME="teams"
+bash 03_deploy_cloud_run.sh
+```
+
+**Test:**
+```shell
+curl -i \
+	-H "Content-Type: application/json" \
+	--data @../http/NotifyMe-HTTP/t/google-test.json \
+	https://<Cloud Run service URL>/v1/ms-teams.pl?key=$API_KEY
+```
+
+#### Pushover
+
+**Deploy another Cloud Run service for Pushover `pushover.pl`:**
+```shell
+# Pushover
+export APP_USER="The user/group key"
+export APP_TOKEN="Your applications API token"
+# Other Cloud Run service name
+export MY_GCP_RUN_SERVICE_NAME="pushover"
 bash 03_deploy_cloud_run.sh
 ```
 
