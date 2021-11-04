@@ -18,7 +18,7 @@ package NotifyMe::HTTP;
 use Dancer2;
 use Digest::SHA qw(sha256_hex);
 
-our $VERSION = '1.2.1';
+our $VERSION = '1.2.2';
 
 # AUTHENTICATION
 hook before_request => sub {
@@ -82,6 +82,9 @@ post qr{/v1/([\w\d_-]+\.pl)} => sub {
 			while (<FH>) {
 				$file_content .= $_;
 			}
+			close FH;
+			unlink($filename); # Delete file
+			debug( $file_content );
 			# Check output
 			if ( $file_content =~ /OK/ ) {
 				response->status(200);
