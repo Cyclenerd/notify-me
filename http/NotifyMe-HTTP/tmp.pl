@@ -22,7 +22,9 @@ BEGIN {
 	$VERSION = "1.0";
 }
 use utf8;
-binmode(STDOUT, ":utf8");
+binmode(STDOUT, ':encoding(utf8)');
+use strict;
+use Encode;
 use strict;
 use App::Options (
 	option => {
@@ -32,12 +34,15 @@ use App::Options (
 	},
 );
 
+my $title  = decode('UTF-8', $App::options{title});
+my $msg    = decode('UTF-8', $App::options{msg});
+
 my $file = "/tmp/notiy-me-tmp-test";
-open(DATA, ">$file") or die "Couldn't open file '$file', $!";
+open(DATA, '>:utf8', $file) or die "Couldn't open file '$file', $!";
 
 print DATA "env   = $App::options{env}\n";
-print DATA "title = $App::options{title}\n";
-print DATA "msg   = $App::options{msg}\n";
+print DATA "title = $title\n";
+print DATA "msg   = $msg\n";
 
 close DATA;
 

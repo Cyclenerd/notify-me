@@ -70,21 +70,37 @@ post qr{/v1/([\w\d_-]+\.pl)} => sub {
 				# Message
 				$msg = "$icon [$state] $policy_name » $resource_name : $summary";
 			}
-			# Random filename for output
-			my $digest   = sha256_hex( time()+rand(10000) );
-			my $filename = '/tmp/notify-me-'.$digest.'.txt';
+			# Random filename for mesage, title and output
+			my $digest     = sha256_hex( time()+rand(10000) );
+			my $file_out   = '/tmp/'.$digest.'.out';
+			my $file_msg   = '/tmp/'.$digest.'.msg';
+			my $file_title = '/tmp/'.$digest.'.title';
+			debug( "Digest: " .$digest );
+			# Save message
+			debug( "Msg: " .$msg );
+			open(MSG, '>:utf8', $file_msg);
+			print MSG "$msg";
+			close MSG;
+			# Save title
+			debug( "Title: " .$title );
+			open(TITLE, '>:utf8', $file_title);
+			print TITLE "$title";
+			close TITLE;
 			# Run command line Perl script and redirect output
-			my $perl_script = qx(perl \"$script\" --msg=\"$msg\" --title=\"$title\" > $filename 2>&1);
+			my $perl_script = qx{ perl $script --msg="\$\( head -1 $file_msg \)" --title="\$\( head -1 $file_title \)" > $file_out 2>&1 };
 			# Read output (STDOUT and STDERR)
-			open(FH, '<', $filename);
+			open(FH, '<', $file_out);
 			my $file_content = '';
 			while (<FH>) {
 				$file_content .= $_;
 			}
 			close FH;
-			unlink($filename); # Delete file
-			debug( $file_content );
+			 # Delete files
+			unlink($file_out);
+			unlink($file_msg);
+			unlink($file_title);
 			# Check output
+			debug( $file_content );
 			if ( $file_content =~ /OK/ ) {
 				response->status(200);
 				send_as JSON => { ok => "Message sent successfully" };
