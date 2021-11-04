@@ -43,9 +43,17 @@ fi
 MY_GCP_RUN_IMAGE="$MY_GCP_REGION-docker.pkg.dev/$MY_GCP_PROJECT/$MY_GCP_REPOSITORY_NAME/notify-me:http-latest"
 
 echo
-echo "Login"
-echo "-----"
-gcloud auth list --filter="status:ACTIVE" --format="value(account)" --limit=1
+echo "List repositories"
+echo "-----------------"
+gcloud artifacts repositories list \
+--filter="format:docker" \
+--location="$MY_GCP_REGION" \
+--project="$MY_GCP_PROJECT"
+echo
+
+echo
+echo "Docker auth"
+echo "-----------"
 gcloud auth configure-docker "$MY_GCP_REGION-docker.pkg.dev" -q
 echo
 
