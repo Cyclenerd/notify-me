@@ -17,6 +17,14 @@ FROM debian:bullseye-slim
 # Default to UTF-8 file.encoding
 ENV LANG C.UTF-8
 
+# Labels
+LABEL org.opencontainers.image.title         "Notify me"
+LABEL org.opencontainers.image.description   "Get notified via MS Teams, sipgate SMS, Pushover and many more..."
+LABEL org.opencontainers.image.url           "https://hub.docker.com/r/cyclenerd/notify-me"
+LABEL org.opencontainers.image.authors       "https://github.com/Cyclenerd/notify-me/graphs/contributors"
+LABEL org.opencontainers.image.documentation "https://github.com/Cyclenerd/notify-me/blob/master/README.md"
+LABEL org.opencontainers.image.source        "https://github.com/Cyclenerd/notify-me"
+
 # Install base packages
 RUN set -eux; \
 	apt-get update -yqq; \
