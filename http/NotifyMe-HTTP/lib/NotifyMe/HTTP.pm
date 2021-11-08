@@ -44,7 +44,7 @@ get '/ptsv2' => sub {
 };
 
 # JSON message
-post qr{/v1/([\w\d_-]+\.pl)} => sub {
+post qr{^/v1/([\w\d_-]+\.pl)$} => sub {
 	my ($script) = splat;
 	if (request->body) {
 		debug( qx( pwd ) );
