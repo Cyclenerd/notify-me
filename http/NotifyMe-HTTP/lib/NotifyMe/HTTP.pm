@@ -89,12 +89,9 @@ post qr{/v1/([\w\d_-]+\.pl)} => sub {
 			# Run command line Perl script and redirect output
 			my $perl_script = qx{ perl $script --msg="\$\( head -1 $file_msg \)" --title="\$\( head -1 $file_title \)" > $file_out 2>&1 };
 			# Read output (STDOUT and STDERR)
-			open(FH, '<', $file_out);
-			my $file_content = '';
-			while (<FH>) {
-				$file_content .= $_;
-			}
-			close FH;
+			open my $fh, "<$file_out";
+			sysread $fh, my $file_content, 1000;
+			close $fh;
 			 # Delete files
 			unlink($file_out);
 			unlink($file_msg);
