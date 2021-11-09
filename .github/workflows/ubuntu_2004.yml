@@ -41,6 +41,6 @@ jobs:
       - name: Versions 📏
         run: cd t/ && bash test.sh
 
-      # Get versions
+      # Test NotifyMe-HTTP
       - name: Test NotifyMe-HTTP 📏
         run: cd http/NotifyMe-HTTP/ && bash t/test.sh
