@@ -18,7 +18,9 @@ jobs:
           sudo apt-get install  \
             libapp-options-perl \
             libwww-perl         \
-            libjson-xs-perl
+            libjson-xs-perl     \
+            libdancer2-perl     \
+            starman
         
       - name: Checkout 🛎️
         uses: actions/checkout@v2
