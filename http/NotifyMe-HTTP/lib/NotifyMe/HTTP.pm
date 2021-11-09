@@ -46,10 +46,11 @@ get '/ptsv2' => sub {
 # JSON message
 post qr{^/v1/([\w\d_-]+\.pl)$} => sub {
 	my ($script) = splat;
+	debug( "  Script: ". $script );
 	if (request->body) {
 		debug( qx( pwd ) );
 		# Decode JSON
-		debug( request->body );
+		debug( "  Body: ". request->body );
 		# Defaults
 		my $title = "";
 		my $msg   = "message missing";
@@ -75,14 +76,14 @@ post qr{^/v1/([\w\d_-]+\.pl)$} => sub {
 			my $file_out   = '/tmp/'.$digest.'.out';
 			my $file_msg   = '/tmp/'.$digest.'.msg';
 			my $file_title = '/tmp/'.$digest.'.title';
-			debug( "Digest: " .$digest );
+			debug( "  Digest: " .$digest );
 			# Save message
-			debug( "Msg: " .$msg );
+			debug( "  Msg: " .$msg );
 			open(MSG, '>:utf8', $file_msg);
 			print MSG "$msg";
 			close MSG;
 			# Save title
-			debug( "Title: " .$title );
+			debug( "  Title: " .$title );
 			open(TITLE, '>:utf8', $file_title);
 			print TITLE "$title";
 			close TITLE;
@@ -97,7 +98,7 @@ post qr{^/v1/([\w\d_-]+\.pl)$} => sub {
 			unlink($file_msg);
 			unlink($file_title);
 			# Check output
-			debug( $file_content );
+			debug(  "File content: " .$file_content );
 			if ( $file_content =~ /OK/ ) {
 				response->status(200);
 				send_as JSON => { ok => "Message sent successfully" };
