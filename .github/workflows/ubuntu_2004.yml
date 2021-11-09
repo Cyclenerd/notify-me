@@ -43,4 +43,4 @@ jobs:
 
       # Get versions
       - name: Test NotifyMe-HTTP 📏
-        run: cd ../http/NotifyMe-HTTP/ && bash t/test.sh
+        run: cd http/NotifyMe-HTTP/ && bash t/test.sh
