@@ -25,20 +25,6 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
 
-      # Create PTSV2
-      - name: Create PTSV2 toilet 🚽
-        run: |
-          curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-ubuntu2004-3dc7733a5945ff16d085" >> /dev/null
-          curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-ubuntu2004-3dc7733a5945ff16d085/flush_all"
-      # Message
-      - name: Send test message 📤
-        run: perl t/test.pl --msg="Ubuntu 20.04 LTS" --url="https://ptsv2.com/t/github-cyclenerd-notify-me-ubuntu2004-3dc7733a5945ff16d085/post"
-      - name: Test message 📥
-        run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-ubuntu2004-3dc7733a5945ff16d085/d/latest/text" | grep '{"message":"Ubuntu 20.04 LTS"}'
-      # Clean up
-      - name: Clean up 🗑️
-        run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-ubuntu2004-3dc7733a5945ff16d085/flush_all"
-
       # Get versions
       - name: Versions 📏
         run: cd t/ && bash test.sh

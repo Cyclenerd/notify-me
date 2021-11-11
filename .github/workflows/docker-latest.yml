@@ -6,9 +6,34 @@ on:
 
 jobs:
 
+  test:
+    name: Test (again)
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Install dependencies 🔧
+        run: |
+          sudo apt-get install  \
+            libapp-options-perl \
+            libwww-perl         \
+            libjson-xs-perl     \
+            libdancer2-perl     \
+            starman
+        
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+
+      # Get versions
+      - name: Versions 📏
+        run: cd t/ && bash test.sh
+
+      # Test NotifyMe-HTTP
+      - name: Test NotifyMe-HTTP 📏
+        run: cd http/NotifyMe-HTTP/ && bash t/test.sh
+
   docker:
     name: Build Docker images
     runs-on: ubuntu-latest
+    needs: [test]
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2
