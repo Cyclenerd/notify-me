@@ -27,8 +27,7 @@ Overwrite default configuration:
 cat default_config
 
 # Change API key
-echo -n "API_KEY=" >> my_config
-echo $RANDOM | md5sum | head -c 20 >> my_config
+echo "API_KEY='$(echo $RANDOM | md5sum | head -c 20)'" >> my_config
 
 # Change project ID
 echo "MY_GCP_PROJECT='my-project-id'" >> my_config
