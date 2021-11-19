@@ -68,8 +68,15 @@ post qr{^/v1/([\w\d_-]+\.pl)$} => sub {
 				my $condition_name = $json->{incident}->{condition_name} || 'condition name missing';
 				my $summary        = $json->{incident}->{summary}        || 'summary missing';
 				my $icon = $state eq 'open' ? '🔥' : '✅';
+				# Edit state (uppercase)
+				$state = uc $state;
+				# Edit resource name
+				$resource_name =~ s/\{/\[/g;
+				$resource_name =~ s/\}/\]/g;
+				$resource_name =~ s/project_id=/🧳=/g;
+				$resource_name =~ s/host=/🖥️=/g;
 				# Message
-				$msg = "$icon [$state] $policy_name » $resource_name : $summary";
+				$msg = "$icon [$state] $policy_name » $resource_name";
 			}
 			# Random filename for mesage, title and output
 			my $digest     = sha256_hex( time()+rand(10000) );

@@ -2,7 +2,7 @@
     "incident": {
       "incident_id": "f2e08c333dc64cb09f75eaab355393bz",
       "resource_id": "i-4a266a2d",
-      "resource_name": "test-42",
+      "resource_name": "Google Monitoring Webhook test with labels {project_id=project-id, host=hostname.local} can be ignored!!!",
       "state": "test",
       "started_at": 1385085727,
       "ended_at": null,
