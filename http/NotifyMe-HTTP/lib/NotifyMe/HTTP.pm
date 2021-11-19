@@ -67,7 +67,11 @@ post qr{^/v1/([\w\d_-]+\.pl)$} => sub {
 				my $policy_name    = $json->{incident}->{policy_name}    || 'policy name missing';
 				my $condition_name = $json->{incident}->{condition_name} || 'condition name missing';
 				my $summary        = $json->{incident}->{summary}        || 'summary missing';
-				my $icon = $state eq 'open' ? '🔥' : '✅';
+				# Icon
+				my $icon = '➡️';
+				$icon = '🔥' if $state eq 'open';
+				$icon = '✅' if $state eq 'closed';
+				$icon = '🔕' if $state eq 'test';
 				# Edit state (uppercase)
 				$state = uc $state;
 				# Edit resource name
