@@ -18,7 +18,7 @@ package NotifyMe::HTTP;
 use Dancer2;
 use Digest::SHA qw(sha256_hex);
 
-our $VERSION = '1.2.3';
+our $VERSION = '1.2.4';
 
 # AUTHENTICATION
 hook before_request => sub {
@@ -77,8 +77,6 @@ post qr{^/v1/([\w\d_-]+\.pl)$} => sub {
 				# Edit resource name
 				$resource_name =~ s/\{/\[/g;
 				$resource_name =~ s/\}/\]/g;
-				$resource_name =~ s/project_id=/🧳=/g;
-				$resource_name =~ s/host=/🖥️=/g;
 				# Message
 				$msg = "$icon [$state] $policy_name » $resource_name";
 			}
