@@ -12,6 +12,7 @@ Also available as [Docker image](https://github.com/Cyclenerd/notify-me/tree/mas
 * 📧 [Mailgun](https://github.com/Cyclenerd/notify-me#mailgun--mailgunpl)
 * 👪 [Microsoft Teams](https://github.com/Cyclenerd/notify-me#microsoft-teams--ms-teamspl)
 * 🔔 [Pushover](https://github.com/Cyclenerd/notify-me#pushover--pushoverpl)
+* 👾 [Discord](https://github.com/Cyclenerd/notify-me#discord--discordpl)
 * ☎️ [sipgate SMS](https://github.com/Cyclenerd/notify-me#sipgate-sms--sipgatepl)
 
 ## Tested
@@ -141,6 +142,41 @@ You can also create a `pushover.conf` configuration file in the same directory a
 ```text
 user = USER
 token = TOKEN
+msg = MESSAGE
+```
+
+More about this also in the [Configuration](#Configuration) section.
+
+
+## Discord ( `discord.pl`)
+
+Discord webhook API:
+<https://discord.com/developers/docs/resources/webhook#execute-webhook>
+
+Create an webhook URL for your Discord channel:
+<https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks>
+
+The webhook URL should look similar to the following:
+```text
+https://discord.com/api/webhooks/<webhook-id>/<webhook-token>
+```
+
+Download script:
+```
+curl -O https://raw.githubusercontent.com/Cyclenerd/notify-me/master/discord.pl
+```
+
+Run:
+```shell
+perl discord.pl \
+	--url="YOUR_WEBHOOK_URL" \
+	--msg="MESSAGE"
+```
+
+You can also create a `discord.conf` configuration file in the same directory as the `discord.pl` program with default values:
+
+```text
+url = YOUR_WEBHOOK_URL
 msg = MESSAGE
 ```
 
