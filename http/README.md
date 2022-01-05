@@ -1,4 +1,4 @@
-# HTTP Wrapper
+# HTTP API
 
 HTTP wrapper for Perl command line scripts.
 Used in `cyclenerd/notify-me:http-latest` Docker image.
@@ -20,7 +20,7 @@ Debian/Ubuntu:
 sudo apt update
 sudo apt install libdancer2-perl
 # Production only
-#sudo apt install starman
+sudo apt install starman
 ```
 
 Or install modules with cpanminus:

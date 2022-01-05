@@ -57,6 +57,12 @@ If you don't have it installed, the script will try to install it under `/usr/lo
 
 ### Deploy Cloud Run service
 
+Pass options as [environment variables](https://github.com/Cyclenerd/notify-me#environment-variables) to Cloud Run container service:
+```
+# Example for token parameter
+echo "APP_TOKEN='bla-fa'" >> my_config
+```
+
 **Deploy container to Cloud Run service and test HTTP API:**
 ```
 bash 03_deploy_cloud_run.sh
@@ -64,7 +70,15 @@ bash 03_deploy_cloud_run.sh
 
 💡 You can always repeat this step to update the Cloud Run container.
 
-#### Microsoft Teams
+### Done
+
+You can now use the HTTP API to get notified.
+
+## Examples
+
+All other services are deployed ih the same way as explained above.
+
+### Microsoft Teams (`ms-teams.pl`)
 
 **Deploy another Cloud Run service for MS Teams `ms-teams.pl`:**
 ```shell
@@ -83,7 +97,7 @@ curl -i \
 	https://<Cloud Run service URL>/v1/ms-teams.pl?key=$API_KEY
 ```
 
-#### Pushover
+### Pushover (`pushover.pl`)
 
 **Deploy another Cloud Run service for Pushover `pushover.pl`:**
 ```shell
@@ -100,9 +114,5 @@ bash 03_deploy_cloud_run.sh
 curl -i \
 	-H "Content-Type: application/json" \
 	--data @../http/NotifyMe-HTTP/t/google-test.json \
-	https://<Cloud Run service URL>/v1/ms-teams.pl?key=$API_KEY
+	https://<Cloud Run service URL>/v1/pushover.pl?key=$API_KEY
 ```
-
-### Done
-
-You can now use the HTTP API to get notified.
