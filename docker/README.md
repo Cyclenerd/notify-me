@@ -34,25 +34,67 @@ docker pull ghcr.io/cyclenerd/notify-me:latest
 
 ## Run
 
+### Mailgun
+
+Run:
+```
+docker run cyclenerd/notify-me:latest mailgun.pl --help
+```
+
 ### Microsoft Teams
 
 Run:
-```shell
-docker run cyclenerd/notify-me:latest ms-teams.pl --help
 ```
-
-### sipgate SMS
-
-Run:
-```shell
-docker run cyclenerd/notify-me:latest sipgate-sms.pl --help
+docker run cyclenerd/notify-me:latest ms-teams.pl --help
 ```
 
 ### Pushover
 
 Run:
-```shell
+```
 docker run cyclenerd/notify-me:latest pushover.pl --help
+```
+
+### Discord
+
+Run:
+```
+docker run cyclenerd/notify-me:latest discord.pl --help
+```
+
+### sipgate SMS
+
+Run:
+```
+docker run cyclenerd/notify-me:latest sipgate-sms.pl --help
+```
+
+### GitHub Issue
+
+Run:
+```
+docker run cyclenerd/notify-me:latest github-issue.pl --help
+```
+
+#### GitHub Issue Comment
+
+Run:
+```
+docker run cyclenerd/notify-me:latest github-issue-comment.pl --help
+```
+
+### GitLab Issue
+
+Run:
+```
+docker run cyclenerd/notify-me:latest gitlab-issue.pl --help
+```
+
+#### GitLab Issue Comment
+
+Run:
+```
+docker run cyclenerd/notify-me:latest gitlab-issue-comment.pl --help
 ```
 
 ## Environment Variables
