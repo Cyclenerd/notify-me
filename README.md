@@ -1,6 +1,6 @@
 # Notify me
 
-A collection of Perl scripts to notify you via Mailgun, MS Teams, sipgate SMS, Pushover, etc...
+A collection of Perl scripts to notify you via Mailgun, Microsoft Teams, Pushover, Discord, sipgate SMS, GitHub and GitLab issues.
 
 Also available as [Docker image](https://github.com/Cyclenerd/notify-me/tree/master/docker) and
 [Docker image with HTTP API server](https://github.com/Cyclenerd/notify-me/tree/master/docker#http-image) for hosting using AWS, Azure or [Google Cloud Platform](https://github.com/Cyclenerd/notify-me/tree/master/gcp_cloud_run).
@@ -15,6 +15,7 @@ Also available as [Docker image](https://github.com/Cyclenerd/notify-me/tree/mas
 * 👾 [Discord](https://github.com/Cyclenerd/notify-me#discord--discordpl)
 * ☎️ [sipgate SMS](https://github.com/Cyclenerd/notify-me#sipgate-sms--sipgatepl)
 * 😽 [GitHub Issue](https://github.com/Cyclenerd/notify-me#github-issue--github-issuepl)
+* 🦊 [GitLab Issue](https://github.com/Cyclenerd/notify-me#gitlab-issue--gitlab-issuepl)
 
 ## Tested
 
@@ -294,6 +295,41 @@ msg = YOUR_MESSAGE
 ```
 
 More about this also in the [Configuration](#Configuration) section.
+
+
+## GitLab Issue ( `gitlab-issue.pl`)
+
+Create an GitLab issue via the GitLab REST API v4.
+
+1. [Generate a personal access token](https://gitlab.com/-/profile/personal_access_tokens?name=notify-me&scopes=api) ([Help](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#create-a-personal-access-token))
+1. Select scope: `api`
+
+Download script:
+```
+curl -O https://raw.githubusercontent.com/Cyclenerd/notify-me/master/gitlab-issue.pl
+```
+
+```shell
+perl gitlab-issue.pl \
+	--server="OPTIONAL_YOUR_OWN_GITLAB_SERVER" \
+	--project="GITLAB_PROJECT_ID" \
+	--token="YOUR_GITLAB_TOKEN" \
+	--title="YOUR_TITLE" \
+	--msg="YOUR_MESSAGE"
+```
+
+You can also create a `gitlab-issue.conf` configuration file in the same directory as the `gitlab-issue.pl` program with default values:
+
+```text
+server = OPTIONAL_YOUR_OWN_GITLAB_SERVER
+project = GITLAB_PROJECT_ID
+token = YOUR_GITLAB_TOKEN
+title = YOUR_TITLE
+msg = YOUR_MESSAGE
+```
+
+More about this also in the [Configuration](#Configuration) section.
+
 
 ## Configuration
 
