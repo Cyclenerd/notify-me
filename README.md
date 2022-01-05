@@ -263,6 +263,38 @@ msg = YOUR_MESSAGE
 
 More about this also in the [Configuration](#Configuration) section.
 
+### GitHub Issue Comment ( `github-issue-comment.pl`)
+
+Create an GitHub issue comment via the GitHub REST API.
+
+Download script:
+```
+curl -O https://raw.githubusercontent.com/Cyclenerd/notify-me/master/github-issue-comment.pl
+```
+
+```shell
+perl github-issue.pl \
+	--ower="GITHUB_REPO_OWNER" \
+	--repo="GITHUB_REPO" \
+	--issue="GITHUB_ISSUE_NUMBER" \
+	--username="YOUR_GITHUB_USERNAME" \
+	--token="YOUR_GITHUB_TOKEN" \
+	--msg="YOUR_MESSAGE"
+```
+
+You can also create a `github-issue-comment.conf` configuration file in the same directory as the `github-issue-comment.pl` program with default values:
+
+```text
+ower = GITHUB_REPO_OWNER
+repo = GITHUB_REPO
+issue = GITHUB_ISSUE_NUMBER
+username = YOUR_GITHUB_USERNAME
+token = YOUR_GITHUB_TOKEN
+msg = YOUR_MESSAGE
+```
+
+More about this also in the [Configuration](#Configuration) section.
+
 ## Configuration
 
 The Perl module [App::Options](https://metacpan.org/pod/App::Options) is used.
