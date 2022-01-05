@@ -14,6 +14,7 @@ Also available as [Docker image](https://github.com/Cyclenerd/notify-me/tree/mas
 * 🔔 [Pushover](https://github.com/Cyclenerd/notify-me#pushover--pushoverpl)
 * 👾 [Discord](https://github.com/Cyclenerd/notify-me#discord--discordpl)
 * ☎️ [sipgate SMS](https://github.com/Cyclenerd/notify-me#sipgate-sms--sipgatepl)
+* 😽 [GitHub Issue](https://github.com/Cyclenerd/notify-me#github-issue--github-issuepl)
 
 ## Tested
 
@@ -223,6 +224,44 @@ For more information about personal access tokens visit <https://www.sipgate.io/
 The `smsId` uniquely identifies the extension from which you wish to send your message.
 Further explanation is given in the section Web SMS Extensions <https://github.com/sipgate-io/sipgateio-sendsms-php#web-sms-extensions>.
 
+
+## GitHub Issue ( `github-issue.pl`)
+
+Create an GitHub issue via the GitHub REST API.
+Any user with pull access to a repository can create an issue.
+
+1. [Generate a personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token)
+1. Select scope:
+	* `public_repo` : To create issues in public repositories
+	* `repo` (Full control of private repositories ) : To create issues in private repositories
+
+Download script:
+```
+curl -O https://raw.githubusercontent.com/Cyclenerd/notify-me/master/github-issue.pl
+```
+
+```shell
+perl github-issue.pl \
+	--ower="GITHUB_REPO_OWNER" \
+	--repo="GITHUB_REPO" \
+	--username="YOUR_GITHUB_USERNAME" \
+	--token="YOUR_GITHUB_TOKEN" \
+	--title="YOUR_TITLE" \
+	--msg="YOUR_MESSAGE"
+```
+
+You can also create a `github-issue.conf` configuration file in the same directory as the `github-issue.pl` program with default values:
+
+```text
+ower = GITHUB_REPO_OWNER
+repo = GITHUB_REPO
+username = YOUR_GITHUB_USERNAME
+token = YOUR_GITHUB_TOKEN
+title = YOUR_TITLE
+msg = YOUR_MESSAGE
+```
+
+More about this also in the [Configuration](#Configuration) section.
 
 ## Configuration
 
