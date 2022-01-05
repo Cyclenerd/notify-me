@@ -330,6 +330,36 @@ msg = YOUR_MESSAGE
 
 More about this also in the [Configuration](#Configuration) section.
 
+## GitLab Issue Comment ( `gitlab-issue-comment.pl`)
+
+Create an GitLab issue comment via the GitLab REST API v4.
+
+Download script:
+```
+curl -O https://raw.githubusercontent.com/Cyclenerd/notify-me/master/gitlab-issue-comment.pl
+```
+
+```shell
+perl gitlab-issue-comment.pl \
+	--server="OPTIONAL_YOUR_OWN_GITLAB_SERVER" \
+	--project="GITLAB_PROJECT_ID" \
+	--issue="GITLAB_ISSUE_NUMBER" \
+	--token="YOUR_GITLAB_TOKEN" \
+	--msg="YOUR_MESSAGE"
+```
+
+You can also create a `gitlab-issue-comment.conf` configuration file in the same directory as the `gitlab-issue-comment.pl` program with default values:
+
+```text
+server = OPTIONAL_YOUR_OWN_GITLAB_SERVER
+project = GITLAB_PROJECT_ID
+issue = GITLAB_ISSUE_NUMBER
+token = YOUR_GITLAB_TOKEN
+msg = YOUR_MESSAGE
+```
+
+More about this also in the [Configuration](#Configuration) section.
+
 
 ## Configuration
 
