@@ -18,7 +18,7 @@ package NotifyMe::HTTP;
 use Dancer2;
 use Digest::SHA qw(sha256_hex);
 
-our $VERSION = '1.2.4';
+our $VERSION = '1.2.5';
 
 # AUTHENTICATION
 hook before_request => sub {
@@ -62,23 +62,26 @@ post qr{^/v1/([\w\d_-]+\.pl)$} => sub {
 			$msg   = $json->{msg}   if ($json->{msg});
 			# Read Google Monitoring JSON message
 			if ($json->{incident}) {
-				my $resource_name  = $json->{incident}->{resource_name}  || 'resource name missing';
+				my $incident_id    = $json->{incident}->{incident_id}    || '';
+				my $resource_id    = $json->{incident}->{resource_id}    || '';
+				my $resource_name  = $json->{incident}->{resource_name}  || '';
 				my $state          = $json->{incident}->{state}          || '???';
-				my $policy_name    = $json->{incident}->{policy_name}    || 'policy name missing';
-				my $condition_name = $json->{incident}->{condition_name} || 'condition name missing';
-				my $summary        = $json->{incident}->{summary}        || 'summary missing';
+				my $policy_name    = $json->{incident}->{policy_name}    || '';
+				my $condition_name = $json->{incident}->{condition_name} || '';
+				my $url            = $json->{incident}->{url}            || '';
+				my $summary        = $json->{incident}->{summary}        || '';
+				$state = uc $state; # Edit state (uppercase)
 				# Icon
 				my $icon = '➡️';
-				$icon = '🔥' if $state eq 'open';
-				$icon = '✅' if $state eq 'closed';
-				$icon = '🔕' if $state eq 'test';
-				# Edit state (uppercase)
-				$state = uc $state;
-				# Edit resource name
-				$resource_name =~ s/\{/\[/g;
-				$resource_name =~ s/\}/\]/g;
+				$icon = '🔥' if $state eq 'OPEN';
+				$icon = '✅' if $state eq 'CLOSED';
+				$icon = '🔕' if $state eq 'TEST';
 				# Message
-				$msg = "$icon [$state] $policy_name » $resource_name";
+				$msg = "$icon [$state] $policy_name";
+				$msg .= " » resource = $resource_name" if ($resource_name);
+				$msg .= " » policy = $policy_name" if ($policy_name);
+				$msg .= " » condition = $condition_name" if ($condition_name);
+				$msg .= " » summary = $summary" if ($summary);
 			}
 			# Random filename for mesage, title and output
 			my $digest     = sha256_hex( time()+rand(10000) );
