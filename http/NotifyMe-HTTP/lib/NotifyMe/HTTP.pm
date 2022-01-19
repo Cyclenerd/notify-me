@@ -70,7 +70,16 @@ post qr{^/v1/([\w\d_-]+\.pl)$} => sub {
 				my $condition_name = $json->{incident}->{condition_name} || '';
 				my $url            = $json->{incident}->{url}            || '';
 				my $summary        = $json->{incident}->{summary}        || '';
-				$state = uc $state; # Edit state (uppercase)
+				# Edit values
+				$state          = uc $state; 
+				$policy_name    =~ s/\{/\[/g;
+				$policy_name    =~ s/\}/\]/g;
+				$resource_name  =~ s/\{/\[/g;
+				$resource_name  =~ s/\}/\]/g;
+				$condition_name =~ s/\{/\[/g;
+				$condition_name =~ s/\}/\]/g;
+				$summary        =~ s/\{/\[/g;
+				$summary        =~ s/\}/\]/g;
 				# Icon
 				my $icon = '➡️';
 				$icon = '🔥' if $state eq 'OPEN';
