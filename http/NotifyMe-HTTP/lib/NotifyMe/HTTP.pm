@@ -18,7 +18,7 @@ package NotifyMe::HTTP;
 use Dancer2;
 use Digest::SHA qw(sha256_hex);
 
-our $VERSION = '1.2.5';
+our $VERSION = '1.2.6';
 
 # AUTHENTICATION
 hook before_request => sub {
@@ -79,9 +79,9 @@ post qr{^/v1/([\w\d_-]+\.pl)$} => sub {
 				# Message
 				$msg = "$icon [$state] $policy_name";
 				$msg .= " » resource = $resource_name" if ($resource_name);
-				$msg .= " » policy = $policy_name" if ($policy_name);
 				$msg .= " » condition = $condition_name" if ($condition_name);
 				$msg .= " » summary = $summary" if ($summary);
+				$msg .= " » url = $url" if ($url);
 			}
 			# Random filename for mesage, title and output
 			my $digest     = sha256_hex( time()+rand(10000) );
