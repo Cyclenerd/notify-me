@@ -15,9 +15,7 @@ jobs:
           sudo apt-get install  \
             libapp-options-perl \
             libwww-perl         \
-            libjson-xs-perl     \
-            libdancer2-perl     \
-            starman
+            libjson-xs-perl
         
       - name: Checkout 🛎️
         uses: actions/checkout@v2
@@ -25,10 +23,6 @@ jobs:
       # Get versions
       - name: Versions 📏
         run: cd t/ && bash test.sh
-
-      # Test NotifyMe-HTTP
-      - name: Test NotifyMe-HTTP 📏
-        run: cd http/NotifyMe-HTTP/ && bash t/test.sh
 
   docker:
     name: Build Docker images
@@ -61,20 +55,9 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./docker/cli/Dockerfile
+          file: ./Dockerfile
           push: true
           tags: ghcr.io/cyclenerd/notify-me:test
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-
-      - name: Build and push HTTP image 🧪
-        id: docker_build_http
-        uses: docker/build-push-action@v2
-        with:
-          context: .
-          file: ./docker/http/Dockerfile
-          push: true
-          tags: ghcr.io/cyclenerd/notify-me:http-test
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
 
@@ -126,44 +109,6 @@ jobs:
       - name: Clean up 🗑️
         run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-3dc7733a5945ff16d085/flush_all"
 
-  docker-http-test:
-    name: Test Docker HTTP image
-    needs: [docker]
-    runs-on: ubuntu-latest
-    services: # Define Docker containers to use for this job.
-      http-server: # Container ID for our notify-me container
-        image: ghcr.io/cyclenerd/notify-me:http-test # Image to pull from GitHub Container registry
-        env:
-          API_KEY: foo
-          PTSV2_URL: https://ptsv2.com/t/github-cyclenerd-notify-me-http-3dc7733a5945ff16d085/post
-        ports:
-          - 8080:8080 # TCP port to expose on Docker container and host environment 
-    steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v2
-      # Run test
-      - name: Test version 📏
-        run: |
-          curl -i http://localhost:8080/?key=foo
-          curl -i http://localhost:8080/ptsv2?key=foo
-      # Create PTSV2
-      - name: Create PTSV2 toilet 🚽
-        run: |
-          curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-http-3dc7733a5945ff16d085" >> /dev/null
-          curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-http-3dc7733a5945ff16d085/flush_all"
-      # Message
-      - name: Send test message 📤
-        run: |
-          curl -i \
-            -H "Content-Type: application/json" \
-            --data @http/NotifyMe-HTTP/t/test.json \
-            http://localhost:8080/v1/test.pl?key=foo
-      - name: Test message 📥
-        run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-http-3dc7733a5945ff16d085/d/latest/text" | grep '{"message":"Test message"}'
-      # Clean up
-      - name: Clean up 🗑️
-        run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-http-3dc7733a5945ff16d085/flush_all"
-
   github-registry-latest:
     name: Push image to GitHub
     runs-on: ubuntu-latest
@@ -202,42 +147,3 @@ jobs:
         run: |
           docker tag ghcr.io/cyclenerd/notify-me:test cyclenerd/notify-me:latest
           docker push cyclenerd/notify-me:latest
-
-  github-registry-http-latest:
-    name: Push image to GitHub
-    runs-on: ubuntu-latest
-    needs: [docker-http-test]
-    steps:
-      - name: Login to GitHub Container registry 🏭
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Pull latest test image from GitHub container registry 📦
-        run: docker pull ghcr.io/cyclenerd/notify-me:http-test
-      - name: Quick test 📏
-        run: docker run ghcr.io/cyclenerd/notify-me:http-test perl /app/test.pl --version
-      - name: Push image to GitHub container registry as latest version 🚢
-        run: |
-          docker tag ghcr.io/cyclenerd/notify-me:http-test ghcr.io/cyclenerd/notify-me:http-latest
-          docker push ghcr.io/cyclenerd/notify-me:http-latest
-
-  docker-hub-http-latest:
-    name: Push image to Docker Hub
-    runs-on: ubuntu-latest
-    needs: [docker-http-test]
-    steps:
-      - name: Login to Docker Hub registry 🏭
-        uses: docker/login-action@v1
-        with:
-          username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
-          password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
-      - name: Pull latest test image from GitHub container registry 📦
-        run: docker pull ghcr.io/cyclenerd/notify-me:http-test
-      - name: Quick test 📏
-        run: docker run ghcr.io/cyclenerd/notify-me:http-test perl /app/test.pl --version
-      - name: Push image to Docker Hub registry as latest version 🚢
-        run: |
-          docker tag ghcr.io/cyclenerd/notify-me:http-test cyclenerd/notify-me:http-latest
-          docker push cyclenerd/notify-me:http-latest

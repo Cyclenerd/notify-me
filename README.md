@@ -2,10 +2,13 @@
 
 A collection of Perl scripts to notify you via Mailgun, Microsoft Teams, Pushover, Discord, sipgate SMS, GitHub and GitLab issues.
 
-Also available as [Docker image](https://github.com/Cyclenerd/notify-me/tree/master/docker) and
-[Docker image with HTTP API server](https://github.com/Cyclenerd/notify-me/tree/master/docker#http-image) for hosting using AWS, Azure or [Google Cloud Platform](https://github.com/Cyclenerd/notify-me/tree/master/gcp_cloud_run).
+Also available as [Docker image](https://hub.docker.com/r/cyclenerd/notify-me).
 
-[![Run on Google Cloud](https://deploy.cloud.run/button.svg)](https://github.com/Cyclenerd/notify-me/tree/master/gcp_cloud_run)
+Docker Hub registry:
+```shell
+docker pull cyclenerd/notify-me:latest
+docker run cyclenerd/notify-me:latest pushover.pl --help
+```
 
 ## Services supported
 
