@@ -26,9 +26,8 @@ docker run cyclenerd/notify-me:latest pushover.pl --help
 
 ## Tested
 
-* [![Ubuntu 18.04 LTS](https://github.com/Cyclenerd/notify-me/actions/workflows/ubuntu_1804.yml/badge.svg)](https://github.com/Cyclenerd/notify-me/actions/workflows/ubuntu_1804.yml)
-* [![Ubuntu 20.04 LTS](https://github.com/Cyclenerd/notify-me/actions/workflows/ubuntu_2004.yml/badge.svg)](https://github.com/Cyclenerd/notify-me/actions/workflows/ubuntu_2004.yml)
-* [![macOS 11](https://github.com/Cyclenerd/notify-me/actions/workflows/macos_11.yml/badge.svg)](https://github.com/Cyclenerd/notify-me/actions/workflows/macos_11.yml)
+* [![Ubuntu](https://github.com/Cyclenerd/notify-me/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/Cyclenerd/notify-me/actions/workflows/ubuntu.yml)
+* [![macOS](https://github.com/Cyclenerd/notify-me/actions/workflows/macos.yml/badge.svg)](https://github.com/Cyclenerd/notify-me/actions/workflows/macos.yml)
 * [![Latest Docker image](https://github.com/Cyclenerd/notify-me/actions/workflows/docker-latest.yml/badge.svg)](https://github.com/Cyclenerd/notify-me/actions/workflows/docker-latest.yml)
 
 ## Requirement

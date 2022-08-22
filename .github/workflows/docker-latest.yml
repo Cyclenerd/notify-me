@@ -8,7 +8,7 @@ jobs:
 
   test:
     name: Test (again)
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Install dependencies 🔧
         run: |

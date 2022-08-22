@@ -1,4 +1,4 @@
-name: "Ubuntu 18.04 LTS"
+name: "Ubuntu"
 
 on:
   push:
@@ -9,9 +9,9 @@ on:
   workflow_dispatch:
 
 jobs:
-  ubuntu-1804:
-    name: Test Ubuntu 18.04 LTS
-    runs-on: ubuntu-18.04
+  ubuntu-2004:
+    name: Test Ubuntu
+    runs-on: ubuntu-latest
     steps:
       - name: Install dependencies 🔧
         run: |
@@ -19,9 +19,10 @@ jobs:
             libapp-options-perl \
             libwww-perl         \
             libjson-xs-perl
-
+        
       - name: Checkout 🛎️
         uses: actions/checkout@v2
 
-      - name: Version 📏
-        run: cd t && bash test.sh
+      # Get versions
+      - name: Versions 📏
+        run: cd t/ && bash test.sh
