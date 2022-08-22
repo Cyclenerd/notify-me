@@ -10,7 +10,7 @@ docker pull cyclenerd/notify-me:latest
 docker run cyclenerd/notify-me:latest pushover.pl --help
 ```
 
-[![Latest Docker images](https://github.com/Cyclenerd/notify-me/actions/workflows/docker-latest.yml/badge.svg)](https://github.com/Cyclenerd/notify-me/actions/workflows/docker-latest.yml)
+[![Latest image](https://github.com/Cyclenerd/notify-me/actions/workflows/docker-latest.yml/badge.svg)](https://github.com/Cyclenerd/notify-me/actions/workflows/docker-latest.yml)
 [![Docker Pulls](https://img.shields.io/docker/pulls/cyclenerd/notify-me)](https://hub.docker.com/r/cyclenerd/notify-me)
 [![GitHub](https://img.shields.io/github/license/cyclenerd/notify-me)](https://github.com/Cyclenerd/notify-me/blob/master/LICENSE)
 
@@ -28,7 +28,7 @@ docker run cyclenerd/notify-me:latest pushover.pl --help
 
 * [![Ubuntu](https://github.com/Cyclenerd/notify-me/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/Cyclenerd/notify-me/actions/workflows/ubuntu.yml)
 * [![macOS](https://github.com/Cyclenerd/notify-me/actions/workflows/macos.yml/badge.svg)](https://github.com/Cyclenerd/notify-me/actions/workflows/macos.yml)
-* [![Latest Docker image](https://github.com/Cyclenerd/notify-me/actions/workflows/docker-latest.yml/badge.svg)](https://github.com/Cyclenerd/notify-me/actions/workflows/docker-latest.yml)
+* [![Latest image](https://github.com/Cyclenerd/notify-me/actions/workflows/docker-latest.yml/badge.svg)](https://github.com/Cyclenerd/notify-me/actions/workflows/docker-latest.yml)
 
 ## Requirement
 

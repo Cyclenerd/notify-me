@@ -1,4 +1,4 @@
-# Copyright 2021 Nils Knieling. All Rights Reserved.
+# Copyright 2022 Nils Knieling. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,10 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM debian:bullseye-slim
+FROM ubuntu:22.04
 
 # Default to UTF-8 file.encoding
 ENV LANG C.UTF-8
+
+# Set debconf frontend to noninteractive
+ENV DEBIAN_FRONTEND noninteractive
 
 # Labels
 LABEL org.opencontainers.image.title         "Notify me"
