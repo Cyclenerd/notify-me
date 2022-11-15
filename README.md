@@ -1,5 +1,11 @@
 # Notify me
 
+[![Bagde: Perl](https://img.shields.io/badge/Perl-%2339457E.svg?logo=perl&logoColor=white)](#readme)
+[![Bagde: Docker](https://img.shields.io/badge/Docker-%230db7ed.svg?logo=docker&logoColor=white)](#readme)
+[![Bagde: Docker Pulls](https://img.shields.io/docker/pulls/cyclenerd/notify-me)](https://hub.docker.com/r/cyclenerd/notify-me)
+[![Bagde: Latest image](https://github.com/Cyclenerd/notify-me/actions/workflows/docker-latest.yml/badge.svg)](https://github.com/Cyclenerd/notify-me/actions/workflows/docker-latest.yml)
+[![Bagde: GitHub](https://img.shields.io/github/license/cyclenerd/notify-me)](https://github.com/Cyclenerd/notify-me/blob/master/LICENSE)
+
 A collection of Perl scripts to notify you via Mailgun, Microsoft Teams, Pushover, Discord, sipgate SMS, GitHub and GitLab issues.
 
 Also available as [Docker image](https://hub.docker.com/r/cyclenerd/notify-me).
@@ -9,10 +15,6 @@ Docker Hub registry:
 docker pull cyclenerd/notify-me:latest
 docker run cyclenerd/notify-me:latest pushover.pl --help
 ```
-
-[![Latest image](https://github.com/Cyclenerd/notify-me/actions/workflows/docker-latest.yml/badge.svg)](https://github.com/Cyclenerd/notify-me/actions/workflows/docker-latest.yml)
-[![Docker Pulls](https://img.shields.io/docker/pulls/cyclenerd/notify-me)](https://hub.docker.com/r/cyclenerd/notify-me)
-[![GitHub](https://img.shields.io/github/license/cyclenerd/notify-me)](https://github.com/Cyclenerd/notify-me/blob/master/LICENSE)
 
 ## Services supported
 
