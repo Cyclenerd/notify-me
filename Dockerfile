@@ -36,7 +36,6 @@ RUN set -eux; \
 	rm -rf /var/lib/apt/lists/*
 
 # Copy scripts
-COPY ./t/test.pl /usr/local/bin/
 COPY ./*.pl /usr/local/bin/
 
 RUN set -eux; \

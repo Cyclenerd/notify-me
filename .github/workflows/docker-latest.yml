@@ -106,7 +106,7 @@ jobs:
       - name: Pull latest test image from GitHub container registry 📦
         run: docker pull ghcr.io/cyclenerd/notify-me:test
       - name: Quick test 📏
-        run: docker run ghcr.io/cyclenerd/notify-me:test test.pl --version
+        run: docker run ghcr.io/cyclenerd/notify-me:test discord.pl --version
       - name: Push image to GitHub container registry as latest version 🚢
         run: |
           docker tag ghcr.io/cyclenerd/notify-me:test ghcr.io/cyclenerd/notify-me:latest
@@ -125,7 +125,7 @@ jobs:
       - name: Pull latest test image from GitHub container registry 📦
         run: docker pull ghcr.io/cyclenerd/notify-me:test
       - name: Quick test 📏
-        run: docker run ghcr.io/cyclenerd/notify-me:test test.pl --version
+        run: docker run ghcr.io/cyclenerd/notify-me:test discord.pl --version
       - name: Push image to Docker Hub registry as latest version 🚢
         run: |
           docker tag ghcr.io/cyclenerd/notify-me:test cyclenerd/notify-me:latest
