@@ -91,23 +91,6 @@ jobs:
       # Run test
       - name: Test versions 📏
         run: bash t/docker.sh
-      # Create PTSV2
-      - name: Create PTSV2 toilet 🚽
-        run: |
-          curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-3dc7733a5945ff16d085" >> /dev/null
-          curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-3dc7733a5945ff16d085/flush_all"
-      # Message
-      - name: Send test message 📤
-        run: |
-          docker run \
-            --env PTSV2_URL="https://ptsv2.com/t/github-cyclenerd-notify-me-3dc7733a5945ff16d085/post" \
-            notify-me \
-            test.pl --msg="test"
-      - name: Test message 📥
-        run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-3dc7733a5945ff16d085/d/latest/text" | grep '{"message":"test"}'
-      # Clean up
-      - name: Clean up 🗑️
-        run: curl -s "https://ptsv2.com/t/github-cyclenerd-notify-me-3dc7733a5945ff16d085/flush_all"
 
   github-registry-latest:
     name: Push image to GitHub
