@@ -40,20 +40,36 @@ docker run cyclenerd/notify-me:latest pushover.pl --help
 	* [LWP::UserAgent](https://metacpan.org/pod/LWP::UserAgent)
 	* [JSON::XS](https://metacpan.org/pod/JSON::XS)
 
-Debian/Ubuntu:
+<details>
+<summary><b>Debian/Ubuntu</b></summary>
+
+Packages:
 ```shell
-sudo apt update
+sudo apt update && \
 sudo apt install \
 	libapp-options-perl \
 	libwww-perl \
 	libjson-xs-perl
 ```
 
-Or install modules with cpanminus:
+</details><!-- // Debian/Ubuntu -->
+
+<details>
+<summary><b>macOS</b></summary>
+
+Homebrew packages:
 ```shell
-cpan App::cpanminus
+brew install perl
+brew install cpanminus pkg-config
+```
+
+Install Perl modules with cpanminus:
+```shell
 cpanm --installdeps .
 ```
+
+</details><!-- macOS -->
+
 
 ## Mailgun ( `mailgun.pl`)
 
