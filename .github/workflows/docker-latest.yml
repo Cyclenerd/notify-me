@@ -68,6 +68,8 @@ jobs:
           # https://hub.docker.com/_/ubuntu/tags?page=1&name=22.04
           # linux/amd64,linux/arm/v7,linux/arm64/v8
           platforms: linux/amd64,linux/arm64
+          provenance: false
+          sbom: false
           outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=Get notified...
           context: .
           file: ./Dockerfile
@@ -100,7 +102,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Inspect test image 💿
-        run: skopeo inspect --config docker://ghcr.io/cyclenerd/notify-me:test | jq
+        run: skopeo inspect --raw docker://ghcr.io/cyclenerd/notify-me:test | jq
 
       - name: Pull CLI test image 💿
         run: |
