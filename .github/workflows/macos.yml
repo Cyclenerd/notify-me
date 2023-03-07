@@ -2,9 +2,11 @@ name: "macOS"
 
 on:
   push:
-    branches: [ master ]
+    paths:
+      - '*.pl'
   pull_request:
-    branches: [ master ]
+    paths:
+      - '*.pl'
 
   workflow_dispatch:
 
