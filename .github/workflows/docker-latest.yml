@@ -66,10 +66,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           # https://hub.docker.com/_/ubuntu/tags?page=1&name=22.04
-          # linux/amd64,linux/arm/v7,linux/arm64/v8
-          platforms: linux/amd64,linux/arm64
-          provenance: false
-          sbom: false
+          platforms: linux/amd64,linux/arm/v7,linux/arm64/v8
           outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=Get notified...
           context: .
           file: ./Dockerfile
@@ -77,6 +74,10 @@ jobs:
           tags: ghcr.io/cyclenerd/notify-me:test
           cache-from: type=local,src=/tmp/.buildx-cache
           cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
+          # Fix unsupported MIME type for compression: application/vnd.in-toto+json
+          # https://github.com/docker/buildx/releases/tag/v0.10.0
+          provenance: false
+          sbom: false
 
       # Temp fix
       # https://github.com/docker/build-push-action/issues/252
