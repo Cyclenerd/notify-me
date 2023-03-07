@@ -42,9 +42,6 @@ jobs:
       # https://github.com/marketplace/actions/docker-setup-buildx
       - name: Set up Docker Buildx 🔧
         uses: docker/setup-buildx-action@v2
-        with:
-          # https://hub.docker.com/_/ubuntu/tags?page=1&name=22.04
-          platforms: linux/amd64,linux/arm/v7,linux/arm64/v8
 
       - name: Cache Docker layers 💾
         uses: actions/cache@v3
@@ -61,10 +58,14 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      # https://github.com/marketplace/actions/build-and-push-docker-images
       - name: Build and push CLI image 🧪
         id: docker_build
-        uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v4
         with:
+          # https://hub.docker.com/_/ubuntu/tags?page=1&name=22.04
+          # linux/amd64,linux/arm/v7,linux/arm64/v8
+          platforms: linux/amd64,linux/arm64
           context: .
           file: ./Dockerfile
           push: true
