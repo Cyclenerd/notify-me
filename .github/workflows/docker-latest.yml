@@ -68,7 +68,7 @@ jobs:
           # https://hub.docker.com/_/ubuntu/tags?page=1&name=22.04
           # linux/amd64,linux/arm/v7,linux/arm64/v8
           platforms: linux/amd64,linux/arm64
-          outputs: type=image,name=target,annotation-index.org.opencontainers.image.description="Get notified via MS Teams, sipgate SMS, Pushover and many more..."
+          outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=Get notified...
           context: .
           file: ./Dockerfile
           push: true
