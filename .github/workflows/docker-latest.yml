@@ -122,7 +122,7 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Push image to GitHub container registry as latest version 🚢
-        run: skopeo copy docker://ghcr.io/cyclenerd/notify-me:test docker://ghcr.io/cyclenerd/notify-me:latest
+        run: skopeo copy --all docker://ghcr.io/cyclenerd/notify-me:test docker://ghcr.io/cyclenerd/notify-me:latest
 
   docker-hub-latest:
     name: Push image to Docker Hub
@@ -135,4 +135,4 @@ jobs:
           username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
       - name: Push image to Docker Hub registry as latest version 🚢
-        run: skopeo copy docker://ghcr.io/cyclenerd/notify-me:test docker://cyclenerd/notify-me:latest
+        run: skopeo copy --all docker://ghcr.io/cyclenerd/notify-me:test docker://cyclenerd/notify-me:latest
