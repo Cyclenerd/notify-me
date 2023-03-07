@@ -10,6 +10,8 @@ jobs:
 
   test:
     name: Test
+    # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#preinstalled-software
+    # https://github.com/actions/runner-images/blob/main/images/linux/Ubuntu2204-Readme.md
     runs-on: ubuntu-22.04
     steps:
       - name: Install dependencies 🔧
@@ -66,6 +68,7 @@ jobs:
           # https://hub.docker.com/_/ubuntu/tags?page=1&name=22.04
           # linux/amd64,linux/arm/v7,linux/arm64/v8
           platforms: linux/amd64,linux/arm64
+          outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=Get notified via MS Teams, sipgate SMS, Pushover and many more...
           context: .
           file: ./Dockerfile
           push: true
@@ -96,6 +99,9 @@ jobs:
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Inspect test image 💿
+        run: skopeo inspect --config docker://ghcr.io/cyclenerd/notify-me:test | jq
+
       - name: Pull CLI test image 💿
         run: |
           docker pull ghcr.io/cyclenerd/notify-me:test
@@ -115,14 +121,8 @@ jobs:
           registry: ghcr.io
           username: ${{ github.repository_owner }}
           password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Pull latest test image from GitHub container registry 📦
-        run: docker pull ghcr.io/cyclenerd/notify-me:test
-      - name: Quick test 📏
-        run: docker run ghcr.io/cyclenerd/notify-me:test discord.pl --version
       - name: Push image to GitHub container registry as latest version 🚢
-        run: |
-          docker tag ghcr.io/cyclenerd/notify-me:test ghcr.io/cyclenerd/notify-me:latest
-          docker push ghcr.io/cyclenerd/notify-me:latest
+        run: skopeo copy docker://ghcr.io/cyclenerd/notify-me:test docker://ghcr.io/cyclenerd/notify-me:latest
 
   docker-hub-latest:
     name: Push image to Docker Hub
@@ -134,11 +134,5 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
-      - name: Pull latest test image from GitHub container registry 📦
-        run: docker pull ghcr.io/cyclenerd/notify-me:test
-      - name: Quick test 📏
-        run: docker run ghcr.io/cyclenerd/notify-me:test discord.pl --version
       - name: Push image to Docker Hub registry as latest version 🚢
-        run: |
-          docker tag ghcr.io/cyclenerd/notify-me:test cyclenerd/notify-me:latest
-          docker push cyclenerd/notify-me:latest
+        run: skopeo copy docker://ghcr.io/cyclenerd/notify-me:test docker://cyclenerd/notify-me:latest
