@@ -14,6 +14,9 @@
 
 FROM ubuntu:22.04
 
+ARG TARGETPLATFORM
+RUN echo "I'm building for $TARGETPLATFORM"
+
 # Default to UTF-8 file.encoding
 ENV LANG C.UTF-8
 

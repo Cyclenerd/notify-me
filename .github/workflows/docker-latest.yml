@@ -38,12 +38,13 @@ jobs:
       # https://github.com/marketplace/actions/docker-setup-qemu
       - name: Set up QEMU 🔧
         uses: docker/setup-qemu-action@v2
-        with:
-          platforms: 'arm64,arm'
 
       # https://github.com/marketplace/actions/docker-setup-buildx
       - name: Set up Docker Buildx 🔧
         uses: docker/setup-buildx-action@v2
+        with:
+          # https://hub.docker.com/_/ubuntu/tags?page=1&name=22.04
+          platforms: linux/amd64,linux/arm/v7,linux/arm64/v8
 
       - name: Cache Docker layers 💾
         uses: actions/cache@v3
