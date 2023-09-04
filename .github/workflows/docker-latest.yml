@@ -22,7 +22,7 @@ jobs:
             libjson-xs-perl
         
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Get versions
       - name: Versions 📏
@@ -34,7 +34,7 @@ jobs:
     needs: [test]
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Add support for more platforms with QEMU
       # https://github.com/marketplace/actions/docker-setup-qemu
@@ -93,7 +93,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Login to GitHub Container registry 🏭
         uses: docker/login-action@v2

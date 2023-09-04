@@ -23,7 +23,7 @@ jobs:
             libjson-xs-perl
         
       - name: Checkout 🛎️
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       # Get versions
       - name: Versions 📏
