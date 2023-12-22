@@ -1,12 +1,12 @@
 # Notify me
 
-[![Bagde: Perl](https://img.shields.io/badge/Perl-%2339457E.svg?logo=perl&logoColor=white)](#readme)
-[![Bagde: Docker](https://img.shields.io/badge/Docker-%230db7ed.svg?logo=docker&logoColor=white)](#readme)
-[![Bagde: Apple](https://img.shields.io/badge/Apple-000000.svg?logo=apple&logoColor=white)](#readme)
-[![Bagde: Linux](https://img.shields.io/badge/Linux-FCC624.svg?logo=linux&logoColor=black)](#readme)
-[![Bagde: Latest image](https://github.com/Cyclenerd/notify-me/actions/workflows/docker-latest.yml/badge.svg)](https://github.com/Cyclenerd/notify-me/actions/workflows/docker-latest.yml)
-[![Bagde: GitHub](https://img.shields.io/github/license/cyclenerd/notify-me)](https://github.com/Cyclenerd/notify-me/blob/master/LICENSE)
-[![Bagde: Docker Pulls](https://img.shields.io/docker/pulls/cyclenerd/notify-me)](https://hub.docker.com/r/cyclenerd/notify-me)
+[![Badge: Perl](https://img.shields.io/badge/Perl-%2339457E.svg?logo=perl&logoColor=white)](#readme)
+[![Badge: Docker](https://img.shields.io/badge/Docker-%230db7ed.svg?logo=docker&logoColor=white)](#readme)
+[![Badge: Apple](https://img.shields.io/badge/Apple-000000.svg?logo=apple&logoColor=white)](#readme)
+[![Badge: Linux](https://img.shields.io/badge/Linux-FCC624.svg?logo=linux&logoColor=black)](#readme)
+[![Badge: Latest image](https://github.com/Cyclenerd/notify-me/actions/workflows/docker-latest.yml/badge.svg)](https://github.com/Cyclenerd/notify-me/actions/workflows/docker-latest.yml)
+[![Badge: GitHub](https://img.shields.io/github/license/cyclenerd/notify-me)](https://github.com/Cyclenerd/notify-me/blob/master/LICENSE)
+[![Badge: Docker Pulls](https://img.shields.io/docker/pulls/cyclenerd/notify-me)](https://hub.docker.com/r/cyclenerd/notify-me)
 
 A collection of Perl scripts to notify you via Mailgun, Microsoft Teams, Pushover, Discord, sipgate SMS, GitHub and GitLab issues.
 
