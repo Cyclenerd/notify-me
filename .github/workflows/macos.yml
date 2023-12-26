@@ -23,7 +23,7 @@ jobs:
       - name: Setup Perl
         uses: shogo82148/actions-setup-perl@v1
         with:
-          perl-version: '5.36'
+          perl-version: '5.38'
           install-modules-with: cpanm
 
       - name: Install Perl dependencies 🔧
