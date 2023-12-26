@@ -40,6 +40,8 @@ jobs:
       # https://github.com/marketplace/actions/docker-setup-qemu
       - name: Set up QEMU 🔧
         uses: docker/setup-qemu-action@v3
+        with:
+          platforms: 'arm,arm64'
 
       # https://github.com/marketplace/actions/docker-setup-buildx
       - name: Set up Docker Buildx 🔧
@@ -66,7 +68,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           # https://hub.docker.com/_/ubuntu/tags?page=1&name=22.04
-          platforms: linux/amd64,linux/arm/v7,linux/arm64/v8
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
           outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=Get notified...
           context: .
           file: ./Dockerfile
