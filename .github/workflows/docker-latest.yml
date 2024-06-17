@@ -65,7 +65,7 @@ jobs:
       # https://github.com/marketplace/actions/build-and-push-docker-images
       - name: Build and push CLI image 🧪
         id: docker_build
-        uses: docker/build-push-action@v5
+        uses: docker/build-push-action@v6
         with:
           # https://hub.docker.com/_/ubuntu/tags?page=1&name=22.04
           platforms: linux/amd64,linux/arm/v7,linux/arm64
