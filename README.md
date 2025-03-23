@@ -10,13 +10,24 @@
 
 A collection of Perl scripts to notify you via Mailgun, Microsoft Teams, Pushover, Discord, sipgate SMS, GitHub and GitLab issues.
 
-Also available as [Docker image](https://hub.docker.com/r/cyclenerd/notify-me).
+Also available as [Container image](https://hub.docker.com/r/cyclenerd/notify-me).
 
-Docker Hub registry:
-```shell
-docker pull cyclenerd/notify-me:latest
-docker run cyclenerd/notify-me:latest pushover.pl --help
+**Container image:**
+
+```text
+docker.io/cyclenerd/notify-me:latest
 ```
+
+**Docker:**
+
+```bash
+docker run cyclenerd/notify-me pushover.pl --help
+```
+
+**Multiarch support:**
+
+* `amd64` : Intel or AMD 64-Bit CPU (x86-64)
+* `arm64` : Arm-based 64-Bit CPU (i.e. Apple silicon, AWS Graviton, Ampere Altra, Google Axion)
 
 ## Services supported
 
@@ -27,12 +38,6 @@ docker run cyclenerd/notify-me:latest pushover.pl --help
 * ☎️ [sipgate SMS](https://github.com/Cyclenerd/notify-me#sipgate-sms--sipgatepl)
 * 😽 [GitHub Issue](https://github.com/Cyclenerd/notify-me#github-issue--github-issuepl)
 * 🦊 [GitLab Issue](https://github.com/Cyclenerd/notify-me#gitlab-issue--gitlab-issuepl)
-
-## Tested
-
-* [![Ubuntu](https://github.com/Cyclenerd/notify-me/actions/workflows/ubuntu.yml/badge.svg)](https://github.com/Cyclenerd/notify-me/actions/workflows/ubuntu.yml)
-* [![macOS](https://github.com/Cyclenerd/notify-me/actions/workflows/macos.yml/badge.svg)](https://github.com/Cyclenerd/notify-me/actions/workflows/macos.yml)
-* [![Latest image](https://github.com/Cyclenerd/notify-me/actions/workflows/docker-latest.yml/badge.svg)](https://github.com/Cyclenerd/notify-me/actions/workflows/docker-latest.yml)
 
 ## Requirement
 
@@ -46,7 +51,8 @@ docker run cyclenerd/notify-me:latest pushover.pl --help
 <summary><b>Debian/Ubuntu</b></summary>
 
 Packages:
-```shell
+
+```bash
 sudo apt update && \
 sudo apt install \
 	libapp-options-perl \
@@ -60,13 +66,15 @@ sudo apt install \
 <summary><b>macOS</b></summary>
 
 Homebrew packages:
-```shell
+
+```bash
 brew install perl
 brew install cpanminus pkg-config
 ```
 
 Install Perl modules with cpanminus:
-```shell
+
+```bash
 cpanm --installdeps .
 ```
 
@@ -78,13 +86,15 @@ cpanm --installdeps .
 Send plain text message via Mailgun API:
 <https://documentation.mailgun.com/en/latest/api-sending.html#sending>
 
-Download script:
-```
+Download:
+
+```bash
 curl -O https://raw.githubusercontent.com/Cyclenerd/notify-me/master/mailgun.pl
 ```
 
 Run:
-```shell
+
+```bash
 perl mailgun.pl \
 	--key="YOUR_API_KEY" \
 	--domain="YOUR_DOMAIN_NAME" \
@@ -123,13 +133,15 @@ IncomingWebhook/3fdd6767bae44ac58e5995547d66a4e4/ ↩
 f332c8d9-3397-4ac5-957b-b8e3fc465a8c
 ```
 
-Download script:
-```
+Download:
+
+```bash
 curl -O https://raw.githubusercontent.com/Cyclenerd/notify-me/master/ms-teams.pl
 ```
 
 Run:
-```shell
+
+```bash
 perl ms-teams.pl \
 	--url="YOUR_WEBHOOK_URL" \
 	--title="YOUR_OPTIONAL_TITLE" \
@@ -152,13 +164,15 @@ More about this also in the [Configuration](#Configuration) section.
 Send message via Pushover API:
 <https://pushover.net/api>
 
-Download script:
-```
+Download:
+
+```bash
 curl -O https://raw.githubusercontent.com/Cyclenerd/notify-me/master/pushover.pl
 ```
 
 Run:
-```shell
+
+```bash
 perl pushover.pl \
 	--user="USER" \
 	--token="TOKEN" \
@@ -185,17 +199,20 @@ Create an webhook URL for your Discord channel:
 <https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks>
 
 The webhook URL should look similar to the following:
+
 ```text
 https://discord.com/api/webhooks/<webhook-id>/<webhook-token>
 ```
 
-Download script:
-```
+Download:
+
+```bash
 curl -O https://raw.githubusercontent.com/Cyclenerd/notify-me/master/discord.pl
 ```
 
 Run:
-```shell
+
+```bash
 perl discord.pl \
 	--url="YOUR_WEBHOOK_URL" \
 	--msg="MESSAGE"
@@ -219,12 +236,15 @@ Send an SMS via the sipgate REST API:
 1. Order the free feature "SMS senden": <https://app.sipgatebasic.de/feature-store/sms-senden>
 1. Get token id and token with 'sessions:sms:write' scope: <https://app.sipgate.com/personal-access-token>
 
-Download script:
-```
+Download:
+
+```bash
 curl -O https://raw.githubusercontent.com/Cyclenerd/notify-me/master/sipgate-sms.pl
 ```
 
-```shell
+Run:
+
+```bash
 perl sipgate-sms.pl \
 	--id="YOUR_SIPGATE_TOKEN_ID" \
 	--token="YOUR_SIPGATE_TOKEN" \
@@ -262,12 +282,15 @@ Any user with pull access to a repository can create an issue.
 	* `public_repo` : To create issues in public repositories
 	* `repo` (Full control of private repositories ) : To create issues in private repositories
 
-Download script:
-```
+Download:
+
+```bash
 curl -O https://raw.githubusercontent.com/Cyclenerd/notify-me/master/github-issue.pl
 ```
 
-```shell
+Run:
+
+```bash
 perl github-issue.pl \
 	--ower="GITHUB_REPO_OWNER" \
 	--repo="GITHUB_REPO" \
@@ -294,12 +317,15 @@ More about this also in the [Configuration](#Configuration) section.
 
 Create an GitHub issue comment via the GitHub REST API.
 
-Download script:
-```
+Download:
+
+```bash
 curl -O https://raw.githubusercontent.com/Cyclenerd/notify-me/master/github-issue-comment.pl
 ```
 
-```shell
+Run:
+
+```bash
 perl github-issue.pl \
 	--ower="GITHUB_REPO_OWNER" \
 	--repo="GITHUB_REPO" \
@@ -330,12 +356,15 @@ Create an GitLab issue via the GitLab REST API v4.
 1. [Generate a personal access token](https://gitlab.com/-/profile/personal_access_tokens?name=notify-me&scopes=api) ([Help](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html#create-a-personal-access-token))
 1. Select scope: `api`
 
-Download script:
-```
+Download:
+
+```bash
 curl -O https://raw.githubusercontent.com/Cyclenerd/notify-me/master/gitlab-issue.pl
 ```
 
-```shell
+Run:
+
+```bash
 perl gitlab-issue.pl \
 	--server="OPTIONAL_YOUR_OWN_GITLAB_SERVER" \
 	--project="GITLAB_PROJECT_ID" \
@@ -360,12 +389,15 @@ More about this also in the [Configuration](#Configuration) section.
 
 Create an GitLab issue comment via the GitLab REST API v4.
 
-Download script:
-```
+Download:
+
+```bash
 curl -O https://raw.githubusercontent.com/Cyclenerd/notify-me/master/gitlab-issue-comment.pl
 ```
 
-```shell
+Run:
+
+```bash
 perl gitlab-issue-comment.pl \
 	--server="OPTIONAL_YOUR_OWN_GITLAB_SERVER" \
 	--project="GITLAB_PROJECT_ID" \
@@ -429,7 +461,8 @@ The environment always overrides an option file value.
 By default, the environment variable for an option variable named `msg` would be `APP_MSG`.
 
 Example:
-```
+
+```bash
 export APP_MSG="My Teams message"
 export APP_TITLE="My Teams title"
 perl ms-teams.pl
@@ -439,7 +472,7 @@ perl ms-teams.pl
 
 Each command line argument that begins with a "-" or a "--" is considered to be an option:
 
-```shell
+```bash
 --msg=test # long option, with arg
 -msg=test  # short option, with arg
 ```
@@ -451,6 +484,7 @@ The command line argument always overrides an option file value and environment 
 Specifying the `--debug_options` option on the command line will assist in figuring out which files App::Options is looking at.
 
 Example:
+
 ```text
 $ perl ms-teams.pl --debug_options
 1. Parsed Command Line Options. [--debug_options]
