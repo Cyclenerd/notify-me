@@ -1,164 +1,33 @@
-name: "Latest image"
+name: "Release Container"
 
 on:
-  push:
-    paths:
-      - '*.pl'
   workflow_dispatch:
 
 jobs:
-
-  test:
-    name: Test
-    # https://docs.github.com/en/actions/using-github-hosted-runners/about-github-hosted-runners#preinstalled-software
-    # https://github.com/actions/runner-images/blob/main/images/linux/Ubuntu2204-Readme.md
-    runs-on: ubuntu-22.04
-    steps:
-      - name: Install dependencies 🔧
-        run: |
-          sudo apt-get install  \
-            libapp-options-perl \
-            libwww-perl         \
-            libjson-xs-perl
-        
-      - name: Checkout 🛎️
-        uses: actions/checkout@v4
-
-      # Get versions
-      - name: Versions 📏
-        run: cd t/ && bash test.sh
-
-  docker:
-    name: Build Docker images
+  release:
+    name: Ship
     runs-on: ubuntu-latest
-    needs: [test]
+
     steps:
-      - name: Checkout 🛎️
+      - name: Checkout
         uses: actions/checkout@v4
 
-      # Add support for more platforms with QEMU
-      # https://github.com/marketplace/actions/docker-setup-qemu
-      - name: Set up QEMU 🔧
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
-        with:
-          platforms: 'arm,arm64'
 
-      # https://github.com/marketplace/actions/docker-setup-buildx
-      - name: Set up Docker Buildx 🔧
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Cache Docker layers 💾
-        uses: actions/cache@v4
-        with:
-          path: /tmp/.buildx-cache
-          key: ${{ runner.os }}-buildx-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-buildx-
-
-      - name: Login to GitHub Container registry 🏭
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      # https://github.com/marketplace/actions/build-and-push-docker-images
-      - name: Build and push CLI image 🧪
-        id: docker_build
-        uses: docker/build-push-action@v6
-        with:
-          # https://hub.docker.com/_/ubuntu/tags?page=1&name=22.04
-          platforms: linux/amd64,linux/arm/v7,linux/arm64
-          outputs: type=image,name=target,annotation-index.org.opencontainers.image.description=Get notified...
-          context: .
-          file: ./Dockerfile
-          push: true
-          tags: ghcr.io/cyclenerd/notify-me:test
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new,mode=max
-          # Fix unsupported MIME type for compression: application/vnd.in-toto+json
-          # https://github.com/docker/buildx/releases/tag/v0.10.0
-          provenance: false
-          sbom: false
-
-      # Temp fix
-      # https://github.com/docker/build-push-action/issues/252
-      # https://github.com/moby/buildkit/issues/1896
-      - name: Move cache
-        run: |
-          rm -rf /tmp/.buildx-cache
-          mv /tmp/.buildx-cache-new /tmp/.buildx-cache
-
-  docker-test:
-    name: Test Docker CLI image
-    needs: [docker]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@v4
-
-      - name: Inspect test image 💿
-        run: skopeo inspect --raw docker://ghcr.io/cyclenerd/notify-me:test | jq
-
-      - name: Pull CLI test image 💿
-        run: |
-          docker pull ghcr.io/cyclenerd/notify-me:test
-          docker tag ghcr.io/cyclenerd/notify-me:test notify-me
-      # Run test
-      - name: Test versions 📏
-        run: bash t/docker.sh
-
-  github-registry-latest:
-    name: Push image to GitHub
-    runs-on: ubuntu-latest
-    needs: [docker-test]
-    steps:
-      - name: Login to GitHub Container registry 🏭
-        uses: docker/login-action@v3
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-      - name: Push image to GitHub container registry as latest version 🚢
-        run: skopeo copy --all docker://ghcr.io/cyclenerd/notify-me:test docker://ghcr.io/cyclenerd/notify-me:latest
-
-  docker-hub-latest:
-    name: Push image to Docker Hub
-    runs-on: ubuntu-latest
-    needs: [docker-test]
-    steps:
-      - name: Login to Docker Hub registry 🏭
+      - name: Login to Docker Hub registry
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_REGISTRY_USERNAME }}
           password: ${{ secrets.DOCKER_REGISTRY_PASSWORD }}
-      - name: Push image to Docker Hub registry as latest version 🚢
-        run: skopeo copy --all docker://ghcr.io/cyclenerd/notify-me:test docker://cyclenerd/notify-me:latest
 
-  # Deletes old container images
-  ghcr-cleaner:
-    name: Registry Cleaner
-    runs-on: 'ubuntu-latest'
-    needs: [docker-hub-latest, github-registry-latest]
-    steps:
-      # As per documentation, the authentication to the GHCR registry must be done using a personal access token (PAT) to delete packages.
-      # Only classic tokens can be used, fined-grained ones and GITHUB_TOKEN are currently (2024-01) not supported.
-      # More:
-      #   https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry
-      #   https://docs.github.com/en/actions/security-guides/automatic-token-authentication#permissions-for-the-github_token
-      # The recommendation is to create a new PAT with only the `read:packages` and `delete:packages` scopes.
-      # Create new token:
-      #   https://github.com/settings/tokens/new?scopes=read:packages,delete:packages
-      # List personal access tokens:
-      #   https://github.com/settings/tokens
-      #
-      # https://github.com/marketplace/actions/ghcr-cleaner
-      # Forked from: https://github.com/Chizkiyahu/delete-untagged-ghcr-action
-      - name: GHCR 🚮
-        uses: quartx-analytics/ghcr-cleaner@v1
+      - name: Publish ${{ matrix.svc }}
+        uses: docker/build-push-action@v6
         with:
-          token: ${{ secrets.PAT_TOKEN }}
-          repository-owner: ${{ github.repository_owner }}
-          repository-name: ${{ github.repository }}
-          owner-type: user
-          delete-untagged: true
+          file: Dockerfile
+          outputs: "type=registry,push=true"
+          platforms: linux/amd64,linux/arm/v7,linux/arm64
+          tags: cyclenerd/notify-me:latest
