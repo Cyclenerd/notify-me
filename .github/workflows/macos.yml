@@ -16,7 +16,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Checkout 🛎️
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       # Setup Perl environment and cache modules
       # https://github.com/shogo82148/actions-setup-perl
