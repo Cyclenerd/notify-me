@@ -1,4 +1,4 @@
-# Copyright 2021-2025 Nils Knieling. All Rights Reserved.
+# Copyright 2021-2026 Nils Knieling. All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -12,19 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-FROM docker.io/library/ubuntu:26.04
+FROM docker.io/library/alpine:latest
 
 # Set environment variables
 ENV LANG="C.UTF-8" \
-	DEBIAN_FRONTEND="noninteractive" \
 	NO_COLOR=1 \
 	NONINTERACTIVE=1
 
 # Install base packages
-RUN apt-get update -yqq && \
-	apt-get install -yqq libwww-perl libapp-options-perl libjson-xs-perl && \
-	apt-get clean && \
-	rm -rf /var/lib/apt/lists/*
+# Note: App::Options is not packaged in Alpine, install via cpanminus
+RUN apk add --no-cache \
+		perl \
+		perl-libwww \
+		perl-lwp-protocol-https \
+		perl-json-xs && \
+	apk add --no-cache --virtual .build-deps \
+		perl-app-cpanminus \
+		make && \
+	cpanm --notest --no-man-pages App::Options && \
+	apk del .build-deps && \
+	rm -rf /root/.cpanm /var/cache/apk/*
 
 # Copy scripts
 COPY ./*.pl /usr/local/bin/
